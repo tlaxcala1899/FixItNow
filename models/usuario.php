@@ -14,7 +14,7 @@ class Usuario {
         while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
             $this->usuarios[] = $filas;
         }
-        return $this->x;
+        return $this->usuarios;
     }
     public function getUsuario($id){
         $consulta = $this->db->query("SELECT * FROM usuario where ID_usuario =".$id);
@@ -24,7 +24,7 @@ class Usuario {
         return $this->usuario;
     }
     public function verificarCredenciales($correo,$contrasena_ingresada){
-        $query = "SELECT ID_usuario, correo, contrasena FROM usuario WHERE correo = :correo LIMIT 1";
+        $query = "SELECT * FROM usuario WHERE correo = :correo LIMIT 1";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':correo', $correo);
         $stmt->execute();
@@ -61,6 +61,26 @@ class Usuario {
         $stmt->bindParam(':correo', $correo);
         $stmt->bindParam(':contrasena', $contrasenaEncriptada);
 
+        return $stmt->execute();
+    }
+    public function actualizarUsuario($id, $nombre, $apellido_paterno, $apellido_materno, $correo, $cedula) {
+        $query = "UPDATE Usuario SET 
+                    nombre = :nombre, 
+                    apellido_paterno = :apellido_paterno, 
+                    apellido_materno = :apellido_materno, 
+                    correo = :correo, 
+                    cedula = :cedula 
+                  WHERE ID_usuario = :id";
+        
+        $stmt = $this->db->prepare($query);
+        
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':apellido_paterno', $apellido_paterno);
+        $stmt->bindParam(':apellido_materno', $apellido_materno);
+        $stmt->bindParam(':correo', $correo);
+        $stmt->bindParam(':cedula', $cedula);
+        $stmt->bindParam(':id', $id);
+        
         return $stmt->execute();
     }
 }

@@ -6,17 +6,28 @@ if (!isset($_SESSION['usuario_id'])) {
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['accion'] === 'cerrar_sesion') {
-    require_once("controllers/LoginController.php"); 
-    $controlador = new LoginController();
-    $controlador->cerrarSesion();
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion'])) {
+    if ($_POST['accion'] === 'cerrar_sesion') {
+        require_once("controllers/LoginController.php"); 
+        $controlador = new LoginController();
+        $controlador->cerrarSesion();
+    } elseif ($_POST['accion'] === 'actualizar_perfil') {
+        require_once("controllers/PerfilController.php");
+        $perfilControlador = new PerfilController();
+        $perfilControlador->actualizarPerfil($_POST);
+    }
 }
 
-$nombreCompleto = $_SESSION['usuario_nombreCompleto'];
-$correo = $_SESSION['usuario_correo'];
-$rol = ucfirst($_SESSION['usuario_rol']);
+$nombre = $_SESSION['usuario_nombre'] ?? '';
+$apellido_paterno = $_SESSION['usuario_apellido_paterno'] ?? '';
+$apellido_materno = $_SESSION['usuario_apellido_materno'] ?? '';
+$correo = $_SESSION['usuario_correo'] ?? '';
+$rol = $_SESSION['usuario_rol'] ?? '';
 $foto = !empty($_SESSION['usuario_foto_perfil']) ? $_SESSION['usuario_foto_perfil'] : 'img/default-avatar.png';
-$cedula = !empty($_SESSION['usuario_cedula']) ? $_SESSION['usuario_cedula'] : 'No registrada';
+$cedula = $_SESSION['usuario_cedula'] ?? '';
+
+$rolMinuscula = strtolower($rol);
+$puedeEditarCedula = ($rolMinuscula === 'profesional' || $rolMinuscula === 'inspector');
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +60,7 @@ $cedula = !empty($_SESSION['usuario_cedula']) ? $_SESSION['usuario_cedula'] : 'N
             padding: 40px 50px;
             width: 400px;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 8px; 
         }
 
         .profile-box h1 {
@@ -66,13 +77,12 @@ $cedula = !empty($_SESSION['usuario_cedula']) ? $_SESSION['usuario_cedula'] : 'N
             border: 3px solid #222;
             margin-bottom: 20px;
         }
+
         .info-group {
             background-color: #ffffff;
             margin-bottom: 12px;
             padding: 10px;
             text-align: left;
-            font-size: 15px;
-            color: #333;
         }
 
         .info-label {
@@ -83,7 +93,23 @@ $cedula = !empty($_SESSION['usuario_cedula']) ? $_SESSION['usuario_cedula'] : 'N
             color: #666;
             text-transform: uppercase;
         }
-/
+
+        .info-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            color: #333;
+            outline: none;
+            font-family: Arial, sans-serif;
+            padding: 2px 0;
+        }
+
+        .info-input.edit-mode {
+            border-bottom: 2px solid #222;
+            background-color: #f9f9f9;
+        }
+
         .action-buttons {
             display: flex;
             justify-content: space-between;
@@ -95,12 +121,12 @@ $cedula = !empty($_SESSION['usuario_cedula']) ? $_SESSION['usuario_cedula'] : 'N
             flex: 1;
             background-color: white;
             color: black;
-            text-decoration: none;
             padding: 10px;
             border-radius: 50px;
             font-weight: bold;
             border: 2px solid black;
             font-size: 14px;
+            cursor: pointer;
             transition: 0.3s;
         }
 
@@ -108,7 +134,6 @@ $cedula = !empty($_SESSION['usuario_cedula']) ? $_SESSION['usuario_cedula'] : 'N
             background-color: #f0f0f0;
         }
 
-        
         .btn-logout {
             flex: 1;
             background-color: #222;
@@ -125,13 +150,6 @@ $cedula = !empty($_SESSION['usuario_cedula']) ? $_SESSION['usuario_cedula'] : 'N
         .btn-logout:hover {
             background-color: #444;
         }
-
-        
-        .logout-form {
-            flex: 1;
-            display: flex;
-            margin: 0;
-        }
     </style>
 </head>
 <body>
@@ -146,37 +164,72 @@ $cedula = !empty($_SESSION['usuario_cedula']) ? $_SESSION['usuario_cedula'] : 'N
             
             <img src="<?php echo htmlspecialchars($foto); ?>" alt="Foto de perfil" class="big-profile-pic">
 
-            <div class="info-group">
-                <span class="info-label">Nombre completo</span>
-                <?php echo htmlspecialchars($nombreCompleto); ?>
-            </div>
+            <form method="POST" id="form-perfil">
+                <input type="hidden" name="accion" id="accion-input" value="cerrar_sesion">
 
-            <div class="info-group">
-                <span class="info-label">Correo electrónico</span>
-                <?php echo htmlspecialchars($correo); ?>
-            </div>
+                <div class="info-group">
+                    <span class="info-label">Nombre</span>
+                    <input type="text" name="nombre" class="info-input editable" value="<?php echo htmlspecialchars($nombre); ?>" readonly required>
+                </div>
 
-            <div class="info-group">
-                <span class="info-label">Rol en la plataforma</span>
-                <?php echo htmlspecialchars($rol); ?>
-            </div>
+                <div class="info-group">
+                    <span class="info-label">Apellido Paterno</span>
+                    <input type="text" name="apellido_paterno" class="info-input editable" value="<?php echo htmlspecialchars($apellido_paterno); ?>" readonly required>
+                </div>
 
-            <div class="info-group">
-                <span class="info-label">Cédula Profesional</span>
-                <?php echo htmlspecialchars($cedula); ?>
-            </div>
+                <div class="info-group">
+                    <span class="info-label">Apellido Materno</span>
+                    <input type="text" name="apellido_materno" class="info-input editable" value="<?php echo htmlspecialchars($apellido_materno); ?>" readonly required>
+                </div>
 
-            <div class="action-buttons">
-                <a href="editar_perfil_view.php" class="btn-edit">Editar perfil</a>
-                
-                <form method="POST" class="logout-form">
-                    <input type="hidden" name="accion" value="cerrar_sesion">
-                    <button type="submit" class="btn-logout">Cerrar sesión</button>
-                </form>
-            </div>
-            
+                <div class="info-group">
+                    <span class="info-label">Correo electrónico</span>
+                    <input type="email" name="correo" class="info-input editable" value="<?php echo htmlspecialchars($correo); ?>" readonly required>
+                </div>
+
+                <div class="info-group">
+                    <span class="info-label">Rol en la plataforma</span>
+                    <input type="text" class="info-input" value="<?php echo htmlspecialchars(ucfirst($rol)); ?>" readonly>
+                </div>
+
+                <div class="info-group">
+                    <span class="info-label">Cédula Profesional</span>
+                    <input type="text" name="cedula" class="info-input <?php echo $puedeEditarCedula ? 'editable' : ''; ?>" value="<?php echo htmlspecialchars($cedula); ?>" readonly>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="button" id="btn-editar" class="btn-edit">Editar perfil</button>
+                    <button type="submit" id="btn-accion-secundaria" class="btn-logout">Cerrar sesión</button>
+                </div>
+            </form>
         </div>
     </main>
 
+    <script>
+        const btnEditar = document.getElementById('btn-editar');
+        const btnAccionSecundaria = document.getElementById('btn-accion-secundaria');
+        const inputsEditables = document.querySelectorAll('.editable');
+        const accionInput = document.getElementById('accion-input');
+        const form = document.getElementById('form-perfil');
+
+        btnEditar.addEventListener('click', (event) => {
+            if (btnEditar.type === 'button') {
+                event.preventDefault(); 
+                
+                inputsEditables.forEach(input => {
+                    input.readOnly = false;
+                    input.classList.add('edit-mode');
+                });
+                
+                btnEditar.textContent = 'Guardar cambios';
+                btnEditar.type = 'submit';
+                accionInput.value = 'actualizar_perfil';
+
+                btnAccionSecundaria.textContent = 'Cancelar';
+                btnAccionSecundaria.type = 'button';
+                btnAccionSecundaria.onclick = () => window.location.reload();
+            }
+        });
+    </script>
 </body>
 </html>
