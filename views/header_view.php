@@ -7,7 +7,9 @@
 <body>
     <header class="main-header">
         <div class="logo-container">
-            <img src="img/fixitnow_blanco_chico.png" alt="FixItNow Logo" class="logo-img">
+            <a href="inicio.php">
+                <img src="img/fixitnow_blanco_chico.png" alt="FixItNow Logo" class="logo-img">
+            </a>
         </div>
 
         <nav class="nav-menu">

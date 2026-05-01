@@ -25,5 +25,11 @@ class LoginController {
             $this->mostrarLogin("Correo o contraseña incorrectos.");
         }
     }
+
+    public function cerrarSesion(){
+        session_unset();
+        header("Location: inicio.php");
+        exit();
+    }
 }
 ?>
