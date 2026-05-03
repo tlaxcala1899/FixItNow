@@ -13,7 +13,7 @@
         </div>
 
         <nav class="nav-menu">
-            <a href="#" class="nav-link">Articulos</a>
+            <a href="ListadoArticulos.php" class="nav-link">Articulos</a>
             <a href="#" class="nav-link">Foros</a>
             <a href="#" class="nav-link">Servicios</a>
             <a href="#" class="nav-link">Sobre nosotros</a>
