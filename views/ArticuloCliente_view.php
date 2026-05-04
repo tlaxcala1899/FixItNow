@@ -117,9 +117,10 @@ $imgUrl = (!empty($articulo['url_img_articulo'])) ? $articulo['url_img_articulo'
                     <h1 class="article-title"><?php echo htmlspecialchars($articulo['titulo']); ?></h1>
                     
                     <?php if ($esProfesional): ?>
-                        <a href="EditarArticulo_view.php?id=<?php echo $articulo['ID']; ?>&version=<?php echo $articulo['version_id']; ?>" class="btn-edit-article">
+                        <a href="EditarArticulo.php?id=<?php echo $articulo['ID']; ?>&version=<?php echo $articulo['version_id']; ?>" class="btn-edit-article">
                             Editar artículo
                         </a>
+                         
                     <?php endif; ?>
                 </div>
 
@@ -131,7 +132,7 @@ $imgUrl = (!empty($articulo['url_img_articulo'])) ? $articulo['url_img_articulo'
                 </div>
 
                 <div class="article-content"><?php echo htmlspecialchars($articulo['contenido']); ?></div>
-                <img src="<?php echo "img_articulos/".htmlspecialchars($imgUrl); ?>" alt="Imagen del artículo" class="article-image">
+                <img src="<?php echo htmlspecialchars($imgUrl); ?>" alt="Imagen del artículo" class="article-image"> 
             </div>
         <?php else: ?>
             <div class="article-box">

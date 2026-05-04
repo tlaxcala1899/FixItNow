@@ -212,7 +212,7 @@ $hay_mas_articulos = count($articulos) === $articulos_por_pagina;
                 
                 <?php foreach ($articulos as $articulo): 
         
-                    $imgUrl = !empty($articulo['url_img_articulo']) ? "img_articulos/".$articulo['url_img_articulo'] : 'img_articulos/-1.png';
+                    $imgUrl = !empty($articulo['url_img_articulo']) ? $articulo['url_img_articulo'] : 'img_articulos/-1.png';
                 ?>
                     
                     <a href="ArticuloCliente.php?id=<?php echo $articulo['version_id']; ?>" class="articulo-btn">

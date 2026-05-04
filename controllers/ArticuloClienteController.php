@@ -6,7 +6,7 @@ class ArticuloClienteController {
             $id = (int)$_GET['id'];
             $modelo = new Articulo();
             
-            $articulo = $modelo->getArticuloInidividual($id); 
+            $articulo = $modelo->getArticuloIndividual($id); 
         } else {
             $articulo = null;
         }
