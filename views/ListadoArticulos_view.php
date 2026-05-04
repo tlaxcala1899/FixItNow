@@ -6,7 +6,7 @@ $controlador = new ListadoArticulosController();
 
 
 $pagina_actual = isset($_GET['pagina']) ? max(1, (int)$_GET['pagina']) : 1;
-$articulos_por_pagina = 5; 
+$articulos_por_pagina = 10; 
 
 $articulos = $controlador->obtenerArticulosPaginados($pagina_actual, $articulos_por_pagina);
 
@@ -215,7 +215,7 @@ $hay_mas_articulos = count($articulos) === $articulos_por_pagina;
                     $imgUrl = !empty($articulo['url_img_articulo']) ? "img_articulos/".$articulo['url_img_articulo'] : 'img_articulos/-1.png';
                 ?>
                     
-                    <a href="ver_articulo.php?id=<?php echo $articulo['ID']; ?>" class="articulo-btn">
+                    <a href="ArticuloCliente.php?id=<?php echo $articulo['version_id']; ?>" class="articulo-btn">
                         
                         <div class="art-img-box">
                             <img src="<?php echo htmlspecialchars($imgUrl); ?>" alt="Imagen artículo">
