@@ -13,10 +13,34 @@
         </div>
 
         <nav class="nav-menu">
-            <a href="ListadoArticulos.php" class="nav-link">Articulos</a>
-            <a href="#" class="nav-link">Foros</a>
-            <a href="#" class="nav-link">Servicios</a>
-            <a href="#" class="nav-link">Sobre nosotros</a>
+            <?php 
+            $rolHeader = isset($_SESSION['usuario_rol']) ? strtolower($_SESSION['usuario_rol']) : 'sinsesion';
+
+            if ($rolHeader === 'cliente'): ?>
+                <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
+                <a href="#" class="nav-link">Foros</a>
+                <a href="#" class="nav-link">Servicios</a>
+                <a href="#" class="nav-link">Sobre nosotros</a>
+            <?php elseif ($rolHeader === 'profesional'): ?>
+                <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
+                <a href="#" class="nav-link">Foros</a>
+                <a href="#" class="nav-link">Mis servicios</a>
+                <a href="#" class="nav-link">Pago plataforma</a>
+            <?php elseif ($rolHeader === 'colaborador'): ?>
+                <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
+                <a href="#" class="nav-link">Foros</a>
+                <a href="#" class="nav-link">Mis respuestas</a>
+                <a href="#" class="nav-link">Sobre nosotros</a>
+            <?php elseif ($rolHeader === 'inspector'): ?>
+                <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
+                <a href="#" class="nav-link">Reporte artículos</a>
+                <a href="#" class="nav-link">Reporte respuestas</a>
+                <a href="#" class="nav-link">Pago plataforma</a>
+            <?php else: // sinsesion ?>
+                <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
+                <a href="#" class="nav-link">Foros</a>
+                <a href="#" class="nav-link">Sobre nosotros</a>
+            <?php endif; ?>
 
             <?php 
             

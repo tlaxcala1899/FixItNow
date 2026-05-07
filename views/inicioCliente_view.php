@@ -1,3 +1,10 @@
+<?php
+    require_once("controllers/ListadoArticulosController.php");
+    $listadoController = new ListadoArticulosController();
+    $articulosDestacados = $listadoController->obtenerArticulosPaginados(1, 5);
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,36 +27,30 @@
 
     <h2 class="section-title">Artículos destacados</h2>
     <section class="content-box">
-        <p class="subtitle">Consulta los artículos destacados de la semana</p>
+      
         
-        <div class="article-card">
-            <div class="icon-box">
-                <img src="camera-icon.png" alt="Icono" class="placeholder-icon">
-            </div>
-            <div class="text-box">
-                <span class="card-title">Titulo</span>
-                <span class="card-excerpt">Extracto del articulo</span>
-            </div>
-        </div>
+        <?php if (!empty($articulosDestacados)): ?>
+            <?php foreach ($articulosDestacados as $articulo): 
+                $imgUrl =  $articulo['url_img_articulo'];
+            ?>
+            <a href="ArticuloCliente.php?id=<?php echo $articulo['version_id']; ?>" style="text-decoration: none; color: inherit;">
+                <div class="article-card">
+                    <div class="icon-box">
+                        <img src="<?php echo htmlspecialchars($imgUrl); ?>" alt="Imagen artículo" class="placeholder-icon" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="text-box">
+                        <span class="card-title"><?php echo htmlspecialchars($articulo['titulo']); ?></span>
+                        <span class="card-excerpt"><?php echo htmlspecialchars(trim($articulo['contenido_resumen'])) . '...'; ?></span>
+                    </div>
+                </div>
+            </a>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p style="text-align: center;">No hay artículos destacados en este momento.</p>
+        <?php endif; ?>
 
-        <div class="article-card">
-            <div class="icon-box">
-                <img src="camera-icon.png" alt="Icono" class="placeholder-icon">
-            </div>
-            <div class="text-box">
-                <span class="card-title">Titulo</span>
-                <span class="card-excerpt">Extracto del articulo</span>
-            </div>
-        </div>
-
-        <div class="article-card">
-            <div class="icon-box">
-                <img src="camera-icon.png" alt="Icono" class="placeholder-icon">
-            </div>
-            <div class="text-box">
-                <span class="card-title">Titulo</span>
-                <span class="card-excerpt">Extracto del articulo</span>
-            </div>
+        <div style="text-align: center; margin-top: 25px;">
+            <a href="ListadoArticulos.php" style="background-color: #222; color: white; padding: 10px 25px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px;">Ver más artículos</a>
         </div>
     </section>
 
@@ -81,7 +82,7 @@
             <span class="user-label">Usuario3</span>
         </div>
     </section>
-
+<?php if (isset($_SESSION['usuario_rol']) && strtolower($_SESSION['usuario_rol']) === 'cliente'): ?>
     <h2 class="section-title">Nuestros servicios</h2>
     <section class="content-box services-box">
         
@@ -98,7 +99,7 @@
             </div>
             <div class="service-label">Hardware</div>
         </div>
-
+<?php endif; ?>
     </section>
 </main>
 </body>
