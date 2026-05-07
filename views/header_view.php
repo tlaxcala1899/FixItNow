@@ -23,6 +23,7 @@
                 <a href="#" class="nav-link">Sobre nosotros</a>
             <?php elseif ($rolHeader === 'profesional'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
+                <a href="RedactarArticulo.php" class="nav-link">Redactar</a>
                 <a href="#" class="nav-link">Foros</a>
                 <a href="#" class="nav-link">Mis servicios</a>
                 <a href="#" class="nav-link">Pago plataforma</a>

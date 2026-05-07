@@ -57,5 +57,30 @@ class Articulo {
         $stmt->bindParam(':id', $version_id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function crearNuevoArticulo($titulo, $categoria, $contenido, $editor_id) {
+        $queryArticulo = "INSERT INTO Articulo (titulo, categoria,redactor) VALUES (:titulo, :categoria,:editor_id)";
+        $stmtArt = $this->db->prepare($queryArticulo);
+        $stmtArt->bindParam(':titulo', $titulo, PDO::PARAM_STR);
+        $stmtArt->bindParam(':categoria', $categoria, PDO::PARAM_STR);
+        $stmtArt->bindParam(':editor_id', $editor_id, PDO::PARAM_STR);
+        if ($stmtArt->execute()) {
+            $articulo_id = $this->db->lastInsertId();
+
+            $queryVersion = "INSERT INTO Version_1 (articulo, contenido, url_img_articulo, editor, fecha_creacion) 
+                             VALUES (:articulo, :contenido, 'img_articulos/-1.png', :editor, NOW())";
+            $stmtVer = $this->db->prepare($queryVersion);
+            $stmtVer->bindParam(':articulo', $articulo_id, PDO::PARAM_INT);
+            $stmtVer->bindParam(':contenido', $contenido, PDO::PARAM_STR);
+            $stmtVer->bindParam(':editor', $editor_id, PDO::PARAM_INT);
+            
+            if ($stmtVer->execute()) {
+                $version_id = $this->db->lastInsertId();
+                return ['articulo_id' => $articulo_id, 'version_id' => $version_id];
+            }
+        }
+        return false;
+    }
+
 }
 ?>
