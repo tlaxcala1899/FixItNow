@@ -18,18 +18,18 @@
 
             if ($rolHeader === 'cliente'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
-                <a href="#" class="nav-link">Foros</a>
+                <a href="ListadoForos.php" class="nav-link">Foros</a>
                 <a href="#" class="nav-link">Servicios</a>
                 <a href="#" class="nav-link">Sobre nosotros</a>
             <?php elseif ($rolHeader === 'profesional'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
                 <a href="RedactarArticulo.php" class="nav-link">Redactar</a>
-                <a href="#" class="nav-link">Foros</a>
+                <a href="ListadoForos.php" class="nav-link">Foros</a>
                 <a href="#" class="nav-link">Mis servicios</a>
                 <a href="#" class="nav-link">Pago plataforma</a>
             <?php elseif ($rolHeader === 'colaborador'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
-                <a href="#" class="nav-link">Foros</a>
+                <a href="ListadoForos.php" class="nav-link">Foros</a>
                 <a href="#" class="nav-link">Mis respuestas</a>
                 <a href="#" class="nav-link">Sobre nosotros</a>
             <?php elseif ($rolHeader === 'inspector'): ?>
@@ -39,7 +39,7 @@
                 <a href="#" class="nav-link">Pago plataforma</a>
             <?php else: // sinsesion ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
-                <a href="#" class="nav-link">Foros</a>
+                <a href="ListadoForos.php" class="nav-link">Foros</a>
                 <a href="#" class="nav-link">Sobre nosotros</a>
             <?php endif; ?>
 
