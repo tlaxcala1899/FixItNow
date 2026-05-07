@@ -164,8 +164,13 @@ $puedeEditarCedula = ($rolMinuscula === 'profesional' || $rolMinuscula === 'insp
             
             <img src="<?php echo htmlspecialchars($foto); ?>" alt="Foto de perfil" class="big-profile-pic">
 
-            <form method="POST" id="form-perfil">
+            <form method="POST" id="form-perfil" enctype="multipart/form-data">
                 <input type="hidden" name="accion" id="accion-input" value="cerrar_sesion">
+                
+                <div class="info-group" id="grupo-foto" style="display: none;">
+                    <span class="info-label">Cambiar foto de perfil</span>
+                    <input type="file" name="foto_perfil" class="info-input editable-file" accept="image/*" disabled>
+                </div>
 
                 <div class="info-group">
                     <span class="info-label">Nombre</span>
@@ -209,6 +214,8 @@ $puedeEditarCedula = ($rolMinuscula === 'profesional' || $rolMinuscula === 'insp
         const btnEditar = document.getElementById('btn-editar');
         const btnAccionSecundaria = document.getElementById('btn-accion-secundaria');
         const inputsEditables = document.querySelectorAll('.editable');
+        const inputFile = document.querySelector('.editable-file');
+        const grupoFoto = document.getElementById('grupo-foto');
         const accionInput = document.getElementById('accion-input');
         const form = document.getElementById('form-perfil');
 
@@ -220,6 +227,9 @@ $puedeEditarCedula = ($rolMinuscula === 'profesional' || $rolMinuscula === 'insp
                     input.readOnly = false;
                     input.classList.add('edit-mode');
                 });
+
+                grupoFoto.style.display = 'block';
+                inputFile.disabled = false;
                 
                 btnEditar.textContent = 'Guardar cambios';
                 btnEditar.type = 'submit';

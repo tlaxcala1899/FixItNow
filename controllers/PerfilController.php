@@ -21,7 +21,27 @@ class PerfilController {
         }
 
         $actualizado = $modelo->actualizarUsuario($id, $nombre, $apellido_paterno, $apellido_materno, $correo, $cedula);
+        
+        if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
+            $directorio = 'fotos_perfil/';    
+            if (!is_dir($directorio)) {
+                mkdir($directorio, 0777, true);
+            }
+            $archivos_viejos = glob($directorio . $id . '.*');
+            foreach ($archivos_viejos as $archivo) {
+                if (is_file($archivo)) {
+                    unlink($archivo);
+                }
+            }
 
+            $ext = pathinfo($_FILES['foto_perfil']['name'], PATHINFO_EXTENSION);
+            $ruta_destino = $directorio . $id . '.' . $ext;
+
+            if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $ruta_destino)) {
+                $modelo->actualizarFotoPerfil($id, $ruta_destino);
+                $_SESSION['usuario_foto_perfil'] = $ruta_destino;
+            }
+        }
         if ($actualizado) {
             $_SESSION['usuario_nombre'] = $nombre;
             $_SESSION['usuario_apellido_paterno'] = $apellido_paterno;

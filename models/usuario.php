@@ -47,7 +47,13 @@ class Usuario {
 
         return $stmt->rowCount() > 0;
     }
-
+    public function actualizarFotoPerfil($id, $ruta_foto) {
+        $query = "UPDATE Usuario SET url_foto_perfil = :ruta_foto WHERE ID_usuario = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':ruta_foto', $ruta_foto, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
     public function crearUsuario($nombre, $apellido_paterno, $apellido_materno, $correo, $contrasenaEncriptada) {
         
         
