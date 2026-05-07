@@ -38,6 +38,43 @@ class Foro {
         
         return $stmt->execute();
     }
+
+    // Función para obtener una sola pregunta por ID con detalles del autor
+    public function getQuestionById($id) {
+        $query = $this->db->prepare("
+            SELECT p.*, u.nombre AS autor_nombre, u.url_foto_perfil AS autor_foto
+            FROM pregunta p
+            INNER JOIN Usuario u ON p.cliente = u.ID_usuario
+            WHERE p.ID_pregunta = :id
+        ");
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getAnswersForQuestion($questionId) {
+        $query = $this->db->prepare("
+            SELECT r.*, u.nombre AS autor_nombre, u.url_foto_perfil AS autor_foto
+            FROM respuesta r
+            INNER JOIN Usuario u ON r.colaborador = u.ID_usuario
+            WHERE r.id_pregunta = :id
+            ORDER BY r.fecha_publicacion ASC
+        ");
+        $query->bindParam(':id', $questionId, PDO::PARAM_INT);
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createAnswer($questionId, $userId, $content) {
+        $query = $this->db->prepare("
+            INSERT INTO respuesta (id_pregunta, colaborador, contenido, fecha_publicacion)
+            VALUES (:pregunta_id, :user_id, :content, NOW())
+        ");
+        $query->bindParam(':pregunta_id', $questionId, PDO::PARAM_INT);
+        $query->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $query->bindParam(':content', $content, PDO::PARAM_STR);
+        return $query->execute();
+    }
 }
 
 ?>

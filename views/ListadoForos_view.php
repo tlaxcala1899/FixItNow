@@ -188,7 +188,7 @@ $hay_mas_foros = count($foros) === $foros_por_pagina;
                     $extracto = !empty($foro['extracto_respuesta']) ? trim($foro['extracto_respuesta']) . '...' : 'Aún no hay respuestas. ¡Sé el primero en ayudar!';
                 ?>
                     
-                    <a href="ForoRespuesta.php?id=<?php echo $foro['ID_pregunta']; ?>" class="foro-btn">
+                    <a href="ForoVista.php?id=<?php echo $foro['ID_pregunta']; ?>" class="foro-btn">
                         <div class="foro-img-box">
                             <img src="<?php echo htmlspecialchars($imgUrl); ?>" alt="Foto de perfil">
                         </div>
