@@ -29,6 +29,15 @@ class Foro {
         
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function crearNuevaPregunta($pregunta, $cliente_id) {
+        $query = "INSERT INTO pregunta (pregunta, cliente) VALUES (:pregunta, :cliente)";
+        $stmt = $this->db->prepare($query);
+        
+        $stmt->bindParam(':pregunta', $pregunta, PDO::PARAM_STR);
+        $stmt->bindParam(':cliente', $cliente_id, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
 }
 
 ?>
