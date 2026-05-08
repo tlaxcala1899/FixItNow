@@ -4,7 +4,7 @@
     $articulosDestacados = $listadoController->obtenerArticulosPaginados(1, 5);
     require_once("controllers/ListadoForosController.php");
     $forosController = new ListadoForosController();
-    $forosDestacados = $forosController->obtenerForosPaginados(1, 4);
+    $forosDestacados = $forosController->obtenerForosPaginados(1, 5);
 ?>
 
 

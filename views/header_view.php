@@ -19,7 +19,7 @@
             if ($rolHeader === 'cliente'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
                 <a href="ListadoForos.php" class="nav-link">Foros</a>
-                <a href="#" class="nav-link">Servicios</a>
+                <a href="ListadoServicios.php" class="nav-link">Servicios</a>
                 <a href="#" class="nav-link">Sobre nosotros</a>
             <?php elseif ($rolHeader === 'profesional'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
