@@ -106,6 +106,7 @@
             </div>
             <div class="service-label">Hardware</div>
         </div>
+        
 <?php endif; ?>
     </section>
 </main>

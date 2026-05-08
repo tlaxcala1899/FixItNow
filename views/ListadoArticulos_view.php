@@ -3,12 +3,20 @@ require_once("controllers/ListadoArticulosController.php");
 $controlador = new ListadoArticulosController();
 
 $pagina_actual = isset($_GET['pagina']) ? max(1, (int)$_GET['pagina']) : 1;
-$articulos_por_pagina = 5; 
+$articulos_por_pagina = 10; 
 
 $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
+$categorias_seleccionadas = isset($_GET['categorias']) && is_array($_GET['categorias']) ? $_GET['categorias'] : [];
 
-$articulos = $controlador->obtenerArticulosPaginados($pagina_actual, $articulos_por_pagina, $busqueda);
+$articulos = $controlador->obtenerArticulosPaginados($pagina_actual, $articulos_por_pagina, $busqueda, $categorias_seleccionadas);
 $hay_mas_articulos = count($articulos) === $articulos_por_pagina;
+
+$query_categorias = '';
+if (!empty($categorias_seleccionadas)) {
+    foreach ($categorias_seleccionadas as $cat) {
+        $query_categorias .= '&categorias[]=' . urlencode($cat);
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -184,20 +192,20 @@ $hay_mas_articulos = count($articulos) === $articulos_por_pagina;
         <h1 class="page-title">Artículos</h1>
 
         <div class="search-bar-container">
-            
-            <button class="btn-icon" id="btn-filtro" title="Filtrar">
-                <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
-            </button>
+            <form method="GET" action="ListadoArticulos.php" style="display: flex; flex-grow: 1; align-items: center; margin: 0; width: 100%;">
+                
+                <button type="button" class="btn-icon" id="btn-filtro" title="Filtrar">
+                    <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+                </button>
 
-            <div id="filtro-submenu" class="filter-dropdown">
-                <h4>Filtrar por:</h4>
-                <label><input type="checkbox"> Hardware</label><br>
-                <label><input type="checkbox"> Software</label><br>
-                <label><input type="checkbox"> Redes</label>
-            </div>
+                <div id="filtro-submenu" class="filter-dropdown">
+                    <h4>Filtrar por:</h4>
+                    <label><input type="checkbox" name="categorias[]" value="Hardware" <?php echo in_array('Hardware', $categorias_seleccionadas) ? 'checked' : ''; ?>> Hardware</label><br>
+                    <label><input type="checkbox" name="categorias[]" value="Software" <?php echo in_array('Software', $categorias_seleccionadas) ? 'checked' : ''; ?>> Software</label><br>
+                    <label><input type="checkbox" name="categorias[]" value="Redes" <?php echo in_array('Redes', $categorias_seleccionadas) ? 'checked' : ''; ?>> Redes</label>
+                </div>
 
-            <form method="GET" action="ListadoArticulos.php" style="display: flex; flex-grow: 1; align-items: center; margin: 0;">
-                <input type="text" name="buscar" class="search-input" placeholder="buscar" value="<?php echo htmlspecialchars($busqueda); ?>">
+                <input type="text" name="buscar" class="search-input" placeholder="buscar" id="input-busqueda" value="<?php echo htmlspecialchars($busqueda); ?>">
                 
                 <button type="submit" class="btn-icon" title="Buscar">
                     <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
@@ -237,11 +245,11 @@ $hay_mas_articulos = count($articulos) === $articulos_por_pagina;
         </div>
 
         <div class="pagination-container">
-            <a href="?pagina=<?php echo $pagina_actual - 1; ?>&buscar=<?php echo urlencode($busqueda); ?>" class="btn-page <?php echo ($pagina_actual <= 1) ? 'disabled' : ''; ?>">
+            <a href="?pagina=<?php echo $pagina_actual - 1; ?>&buscar=<?php echo urlencode($busqueda); ?><?php echo $query_categorias; ?>" class="btn-page <?php echo ($pagina_actual <= 1) ? 'disabled' : ''; ?>">
                 Anterior
             </a>
 
-            <a href="?pagina=<?php echo $pagina_actual + 1; ?>&buscar=<?php echo urlencode($busqueda); ?>" class="btn-page <?php echo (!$hay_mas_articulos) ? 'disabled' : ''; ?>">
+            <a href="?pagina=<?php echo $pagina_actual + 1; ?>&buscar=<?php echo urlencode($busqueda); ?><?php echo $query_categorias; ?>" class="btn-page <?php echo (!$hay_mas_articulos) ? 'disabled' : ''; ?>">
                 Siguiente
             </a>
         </div>

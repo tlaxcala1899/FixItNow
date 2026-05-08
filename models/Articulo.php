@@ -7,7 +7,7 @@ class Articulo {
         $this->db = Conectar::conexion();
         
     }
-    public function getArticulosMasRecientes($inicio, $cantidad, $busqueda = ''){
+    public function getArticulosMasRecientes($inicio, $cantidad, $busqueda = '', $categorias = []){
         $inicio = (int)$inicio;
         $cantidad = (int)$cantidad;
         
@@ -15,22 +15,38 @@ class Articulo {
                 LEFT(V.contenido, 100) AS contenido_resumen, V.url_img_articulo, U.nombre AS editor
                 FROM Articulo AS A 
                 INNER JOIN Version_1 AS V ON A.ID = V.articulo 
-                INNER JOIN Usuario AS U ON V.editor = U.ID_usuario ";
+                INNER JOIN Usuario AS U ON V.editor = U.ID_usuario 
+                WHERE 1=1 "; 
         
+        // Si hay búsqueda por texto
         if (!empty($busqueda)) {
-            $sql .= "WHERE A.titulo LIKE :busqueda ";
+            $sql .= "AND A.titulo LIKE :busqueda ";
+        }
+        
+        // Si hay categorías seleccionadas (usamos IN)
+        if (!empty($categorias) && is_array($categorias)) {
+            $catParams = [];
+            foreach ($categorias as $index => $cat) {
+                $catParams[] = ':cat' . $index; // Genera :cat0, :cat1, etc.
+            }
+            $sql .= "AND A.categoria IN (" . implode(',', $catParams) . ") ";
         }
         
         $sql .= "ORDER BY V.fecha_creacion DESC LIMIT :cantidad OFFSET :inicio";
         
         $stmt = $this->db->prepare($sql);
-        
         $stmt->bindParam(':cantidad', $cantidad, PDO::PARAM_INT);
         $stmt->bindParam(':inicio', $inicio, PDO::PARAM_INT);
         
         if (!empty($busqueda)) {
             $termino = '%' . $busqueda . '%';
             $stmt->bindParam(':busqueda', $termino, PDO::PARAM_STR);
+        }
+        
+        if (!empty($categorias) && is_array($categorias)) {
+            foreach ($categorias as $index => $cat) {
+                $stmt->bindValue(':cat' . $index, $cat, PDO::PARAM_STR);
+            }
         }
         
         $stmt->execute();

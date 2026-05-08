@@ -4,13 +4,13 @@ class ListadoArticulosController {
     public function mostrar() {
         require_once("views/ListadoArticulos_view.php");
     }
-    public function obtenerArticulosPaginados($paginaActual, $articulosPorPagina, $busqueda = '') {
+    public function obtenerArticulosPaginados($paginaActual, $articulosPorPagina, $busqueda = '', $categorias = []) {
         require_once("models/Articulo.php");
         $modelo = new Articulo();
         
         $inicio = ($paginaActual - 1) * $articulosPorPagina;
         
-        return $modelo->getArticulosMasRecientes($inicio, $articulosPorPagina, $busqueda);
+        return $modelo->getArticulosMasRecientes($inicio, $articulosPorPagina, $busqueda, $categorias);
     }
 }
 ?>
