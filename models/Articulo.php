@@ -7,19 +7,34 @@ class Articulo {
         $this->db = Conectar::conexion();
         
     }
-    public function getArticulosMasRecientes($inicio, $cantidad){
+    public function getArticulosMasRecientes($inicio, $cantidad, $busqueda = ''){
         $inicio = (int)$inicio;
         $cantidad = (int)$cantidad;
         
-        $query = $this->db->query("SELECT A.ID,V.ID AS version_id, A.titulo,  A.categoria, 
-            LEFT(V.contenido, 100) AS contenido_resumen,V.url_img_articulo,  U.nombre AS editor
-            FROM Articulo AS A 
-            INNER JOIN Version_1 AS V ON A.ID = V.articulo 
-            INNER JOIN Usuario AS U ON V.editor = U.ID_usuario
-            ORDER BY V.fecha_creacion desc
-            LIMIT ".$cantidad." OFFSET ".$inicio.";");  
+        $sql = "SELECT A.ID, V.ID AS version_id, A.titulo, A.categoria, 
+                LEFT(V.contenido, 100) AS contenido_resumen, V.url_img_articulo, U.nombre AS editor
+                FROM Articulo AS A 
+                INNER JOIN Version_1 AS V ON A.ID = V.articulo 
+                INNER JOIN Usuario AS U ON V.editor = U.ID_usuario ";
         
-        return $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($busqueda)) {
+            $sql .= "WHERE A.titulo LIKE :busqueda ";
+        }
+        
+        $sql .= "ORDER BY V.fecha_creacion DESC LIMIT :cantidad OFFSET :inicio";
+        
+        $stmt = $this->db->prepare($sql);
+        
+        $stmt->bindParam(':cantidad', $cantidad, PDO::PARAM_INT);
+        $stmt->bindParam(':inicio', $inicio, PDO::PARAM_INT);
+        
+        if (!empty($busqueda)) {
+            $termino = '%' . $busqueda . '%';
+            $stmt->bindParam(':busqueda', $termino, PDO::PARAM_STR);
+        }
+        
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getArticuloIndividual($version_ID){
