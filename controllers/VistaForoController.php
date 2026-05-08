@@ -36,7 +36,7 @@ class VistaForoController {
     }
 
     public function addAnswer() {
-        session_start();
+        
         if (!isset($_SESSION['usuario_id'])) {
             header('Location: login.php');
             exit;
@@ -54,15 +54,15 @@ class VistaForoController {
             $content = $_POST['respuesta_content'];
 
             if (empty($content)) {
-                header('Location: ForoRespuesta.php?id=' . $preguntaId . '&error=empty');
+                header('Location: ForoVista.php?id=' . $preguntaId . '&error=empty');
                 exit;
             }
 
             if ($this->foroModel->createAnswer($preguntaId, $userId, $content)) {
-                header('Location: ForoRespuesta.php?id=' . $preguntaId);
+                header('Location: ForoVista.php?id=' . $preguntaId);
                 exit;
             } else {
-                header('Location: ForoRespuesta.php?id=' . $preguntaId . '&error=db');
+                header('Location: ForoVista.php?id=' . $preguntaId . '&error=db');
                 exit;
             }
         }

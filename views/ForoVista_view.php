@@ -186,7 +186,9 @@
 
         <?php if ($canReply): ?>
             <div class="reply-box-outer">
-                <form action="add_answer.php" method="POST" style="width: 100%; display: flex; align-items: center;">
+                <form action="ForoVista.php" method="POST" style="width: 100%; display: flex; align-items: center;">
+                    <input type="hidden" name="accion" value="agregar_respuesta">
+                    
                     <input type="hidden" name="pregunta_id" value="<?php echo htmlspecialchars($question['ID_pregunta']); ?>">
                     
                     <div class="reply-input-inner">
