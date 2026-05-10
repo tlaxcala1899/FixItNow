@@ -200,5 +200,14 @@
         </div>
 
     </main>
+    <script>
+        <?php if (isset($mensaje) && $mensaje === 'Servicio_contratado'): ?>
+            alert('¡Servicio contratado exitosamente!');
+        <?php endif; ?>
+        
+        <?php if (isset($error) && $error === 'Sin_metodo_pago'): ?>
+            alert('Error: Debes registrar un método de pago en tu perfil con todos los datos antes de contratar.');
+        <?php endif; ?>
+    </script>
 </body>
 </html>

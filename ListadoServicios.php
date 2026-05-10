@@ -1,7 +1,10 @@
 <?php
-session_start();
 require_once("controllers/ListadoServiciosController.php");
-
 $controlador = new ListadoServiciosController();
-$controlador->mostrar();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $controlador->contratar();
+} else {
+    $controlador->mostrar();
+}
 ?>

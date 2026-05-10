@@ -59,7 +59,6 @@
 
     <h2 class="section-title">Foros destacados</h2>
     <section class="content-box">
-        <p class="subtitle">Consulta los foros destacados de la semana</p>
 
         <?php if (!empty($forosDestacados)): ?>
             <?php foreach ($forosDestacados as $foro): 

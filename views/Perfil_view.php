@@ -150,6 +150,26 @@ $puedeEditarCedula = ($rolMinuscula === 'profesional' || $rolMinuscula === 'insp
         .btn-logout:hover {
             background-color: #444;
         }
+
+        .btn-metodo-pago {
+            display: inline-block;
+            background-color: #222; 
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-metodo-pago:hover {
+            background-color: #444; 
+        }
     </style>
 </head>
 <body>
@@ -201,7 +221,10 @@ $puedeEditarCedula = ($rolMinuscula === 'profesional' || $rolMinuscula === 'insp
                     <span class="info-label">Cédula Profesional</span>
                     <input type="text" name="cedula" class="info-input <?php echo $puedeEditarCedula ? 'editable' : ''; ?>" value="<?php echo htmlspecialchars($cedula); ?>" readonly>
                 </div>
-
+                
+                <?php if (isset($_SESSION['usuario_rol']) && strtolower($_SESSION['usuario_rol']) === 'cliente'): ?>
+                    <a href="MetodoPago.php" class="btn-metodo-pago">Configurar método de pago</a>
+                <?php endif; ?>
                 <div class="action-buttons">
                     <button type="button" id="btn-editar" class="btn-edit">Editar perfil</button>
                     <button type="submit" id="btn-accion-secundaria" class="btn-logout">Cerrar sesión</button>

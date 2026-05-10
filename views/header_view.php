@@ -25,7 +25,9 @@
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
                 <a href="RedactarArticulo.php" class="nav-link">Redactar</a>
                 <a href="ListadoForos.php" class="nav-link">Foros</a>
-                <a href="#" class="nav-link">Mis servicios</a>
+                <a href="MisServicios.php" class="nav-link">Mis servicios</a>
+                <a href="ListadoServicios.php" class="nav-link">Servicios</a>
+                <a href="IngresosCliente.php" class="nav-link">Ingresos cliente</a>
                 <a href="#" class="nav-link">Pago plataforma</a>
             <?php elseif ($rolHeader === 'colaborador'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
