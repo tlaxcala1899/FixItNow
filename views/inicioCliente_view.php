@@ -5,6 +5,22 @@
     require_once("controllers/ListadoForosController.php");
     $forosController = new ListadoForosController();
     $forosDestacados = $forosController->obtenerForosPaginados(1, 5);
+
+
+    $rolLogueado = strtolower($_SESSION['usuario_rol'] ?? '');
+    $idLogueado = $_SESSION['usuario_id'] ?? null;
+    $serviciosUsuario = [];
+
+    if ($idLogueado) {
+        require_once("models/Servicio.php");
+        $modeloServicio = new Servicio();
+        
+        if ($rolLogueado === 'cliente') {
+            $serviciosUsuario = $modeloServicio->getServiciosContratadosPorCliente($idLogueado, 3);
+        } elseif ($rolLogueado === 'profesional') {
+            $serviciosUsuario = $modeloServicio->getIngresosPorProfesional($idLogueado, 3);
+        }
+    }
 ?>
 
 
@@ -88,25 +104,76 @@
             <a href="ListadoForos.php" style="background-color: #222; color: white; padding: 10px 25px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 14px; display: inline-block;">Ver más foros</a>
         </div>
     </section>
-<?php if (isset($_SESSION['usuario_rol']) && strtolower($_SESSION['usuario_rol']) === 'cliente'): ?>
-    <h2 class="section-title">Nuestros servicios</h2>
-    <section class="content-box services-box">
-        
-        <div class="service-card">
-            <div class="service-image">
-                <img src="img/software.png" alt="Software">
+    <?php if ($rolLogueado === 'cliente'): ?>
+        <h2 class="section-title">Mis contrataciones recientes</h2>
+        <section class="content-box">
+            <p class="subtitle">Servicios que has solicitado a nuestros profesionales</p>
+            
+            <?php if (empty($serviciosUsuario)): ?>
+                <p style="text-align: center; color: #555;">Aún no has contratado ningún servicio.</p>
+            <?php else: foreach ($serviciosUsuario as $s): ?>
+                <div class="article-card" style="background-color: #b5b5b5; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between;">
+                    <div>
+                        <span style="display: block; font-weight: bold; font-size: 16px;"><?php echo htmlspecialchars($s['nombre_servicio']); ?></span>
+                        <span style="font-size: 13px; color: #333;">Atendido por: <?php echo htmlspecialchars($s['profesional_nombre']); ?></span>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="display: block; font-weight: bold;">$<?php echo number_format($s['costo'], 2); ?></span>
+                        <span style="font-size: 11px;"><?php echo date('d/m/Y', strtotime($s['fecha_creacion'])); ?></span>
+                    </div>
+                </div>
+            <?php endforeach; endif; ?>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="ListadoServicios.php" style="background-color: #222; color: white; padding: 8px 20px; text-decoration: none; border-radius: 50px; font-size: 13px;">Contratar más servicios</a>
             </div>
-            <div class="service-label">Software</div>
-        </div>
+        </section>
+    <?php endif; ?>
 
-        <div class="service-card">
-            <div class="service-image">
-                <img src="img/hardware.png" alt="Hardware">
+    <?php if ($rolLogueado === 'profesional'): ?>
+        <h2 class="section-title">Resumen de servicios dados</h2>
+        <section class="content-box">
+            <p class="subtitle">Últimos servicios que has brindado a la comunidad</p>
+            
+            <?php if (empty($serviciosUsuario)): ?>
+                <p style="text-align: center; color: #555;">No hay ventas registradas recientemente.</p>
+            <?php else: foreach ($serviciosUsuario as $s): ?>
+                <div class="article-card" style="background-color: #b5b5b5; margin-bottom: 10px; padding: 15px; display: flex; justify-content: space-between;">
+                    <div>
+                        <span style="display: block; font-weight: bold; font-size: 16px;"><?php echo htmlspecialchars($s['nombre_servicio']); ?></span>
+                        <span style="font-size: 13px; color: #333;">Cliente: <?php echo htmlspecialchars($s['cliente_nombre']); ?></span>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="display: block; font-weight: bold; color: #1a4d1a;">+$<?php echo number_format($s['costo'], 2); ?></span>
+                        <span style="font-size: 11px;"><?php echo date('d/m/Y', strtotime($s['fecha_creacion'])); ?></span>
+                    </div>
+                </div>
+            <?php endforeach; endif; ?>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="IngresosCliente.php" style="background-color: #222; color: white; padding: 8px 20px; text-decoration: none; border-radius: 50px; font-size: 13px;">Ver historial completo</a>
             </div>
-            <div class="service-label">Hardware</div>
-        </div>
-        
-<?php endif; ?>
+        </section>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['usuario_rol']) && strtolower($_SESSION['usuario_rol']) === 'cliente'): ?>
+        <h2 class="section-title">Nuestros servicios</h2>
+        <section class="content-box services-box">
+            
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="img/software.png" alt="Software">
+                </div>
+                <div class="service-label">Software</div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="img/hardware.png" alt="Hardware">
+                </div>
+                <div class="service-label">Hardware</div>
+            </div>
+            
+    <?php endif; ?>
     </section>
 </main>
 </body>

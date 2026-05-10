@@ -138,6 +138,22 @@ class Servicio {
         
         return $stmt->execute();
     }
+    public function getServiciosContratadosPorCliente($cliente_id, $limite = null) {
+        $sql = "SELECT ic.ID, u.nombre AS profesional_nombre, ic.fecha_creacion, s.costo, s.nombre_servicio 
+                FROM ingresos_cliente ic
+                INNER JOIN Usuario u ON ic.profesional = u.ID_usuario
+                INNER JOIN servicios s ON ic.servicio = s.ID
+                WHERE ic.cliente = :cli_id
+                ORDER BY ic.fecha_creacion DESC";
+        
+        if ($limite !== null) { $sql .= " LIMIT :limite"; }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':cli_id', $cliente_id, PDO::PARAM_INT);
+        if ($limite !== null) { $stmt->bindValue(':limite', (int)$limite, PDO::PARAM_INT); }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 ?>
