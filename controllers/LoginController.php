@@ -18,6 +18,13 @@ class LoginController {
             $_SESSION['usuario_foto_perfil']= $usuario['url_foto_perfil'];
             $_SESSION['usuario_rol']= $usuario['rol'];
             
+            if ($usuario['rol'] === 'profesional' || $usuario['rol'] === 'inspector') {
+                require_once("models/Servicio.php");
+                $pagoModel = new Servicio();
+                $pagoModel->verificarYGenerarPagoMensual($usuario['ID_usuario'], 10000.00);
+            }
+
+
             header("Location: inicio.php");
             exit();
         } else {

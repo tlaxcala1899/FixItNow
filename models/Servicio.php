@@ -154,6 +154,52 @@ class Servicio {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getPagosPlataforma($usuario_id) {
+        $sql = "SELECT ID_ingreso, ingreso, fecha_pago 
+                FROM ingresos_plataforma 
+                WHERE usuario = :id 
+                ORDER BY fecha_pago DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $usuario_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    
+    public function verificarYGenerarPagoMensual($usuario_id, $monto) {
+        $sql = "SELECT fecha_pago FROM ingresos_plataforma 
+                WHERE usuario = :id ORDER BY fecha_pago DESC LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $usuario_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $ultimoPago = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $generarNuevo = false;
+
+        if (!$ultimoPago) {
+            $generarNuevo = true;
+        } else {
+            $ultimaFecha = new DateTime($ultimoPago['fecha_pago']);
+            $hoy = new DateTime();
+            $diferencia = $ultimaFecha->diff($hoy);
+            
+            if ($diferencia->m >= 1 || $diferencia->y >= 1) {
+                $generarNuevo = true;
+            }
+        }
+
+        if ($generarNuevo) {
+            $sqlIns = "INSERT INTO ingresos_plataforma (usuario, ingreso, fecha_pago) 
+                       VALUES (:id, :monto, NOW())";
+            $stmtIns = $this->db->prepare($sqlIns);
+            $stmtIns->bindParam(':id', $usuario_id, PDO::PARAM_INT);
+            $stmtIns->bindParam(':monto', $monto, PDO::PARAM_STR);
+            $stmtIns->execute();
+        }
+    }
+
+
 }
 
 ?>
