@@ -1,7 +1,7 @@
 <?php
 
 if (isset($_SESSION['usuario_id'])) {
-    header("Location: dashboard.php");
+    header("Location: inicioCliente.php");
     exit();
 }
 
@@ -150,7 +150,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="password" name="contrasena" placeholder="Contraseña" required>
                 </div>
                 
-                <!-- Este botón es el que acciona la petición POST -->
                 <button type="submit" name="btn_registrar" class="btn-submit">Registrarse</button>
             </form>
 

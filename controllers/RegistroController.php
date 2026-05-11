@@ -1,5 +1,6 @@
 <?php
 require_once("models/usuario.php");
+require_once("controllers/LoginController.php");
 class RegistroController {
     public function mostrar() {
         require_once("views/Registro_view.php");
