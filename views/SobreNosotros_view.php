@@ -4,65 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nosotros - FixItNow</title>
+    <link rel="stylesheet" href="css/header.css">
+    
     <style>
-        /* Estilos base para estructurar la vista */
+        /* COLORES ACORDES A LA PÁGINA (Gris claro) */
         body { 
-            font-family: sans-serif; 
+            font-family: Arial, sans-serif; 
             line-height: 1.6; 
-            color: #333; 
-            background-color: #f9f9f9;
+            color: #000000; 
+            background-color: #d1d1d1; 
             margin: 0;
             padding: 0;
         }
+        
         .container { 
             max-width: 900px; 
             margin: 40px auto; 
             padding: 30px; 
-            background: #ffffff;
+            background: #e6e6e6; 
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
+
         h1 { 
-            color: #0c2e3a; 
+            color: #000000; 
             text-align: center;
             font-size: 2.5em;
             margin-bottom: 10px;
         }
+
         h2 { 
-            color: #018790; 
-            border-bottom: 2px solid #1dcdc3; 
+            color: #333333; 
+            border-bottom: 2px solid #888888; 
             padding-bottom: 8px; 
             margin-top: 30px;
         }
+
         p {
             font-size: 1.1em;
-            color: #434343;
+            color: #222222;
         }
+
         .roles-container { 
             display: flex; 
             flex-wrap: wrap;
             gap: 20px; 
             margin-top: 20px; 
         }
+
         .rol-card { 
-            background: #f0f7f7; 
+            background: #d1d1d1; 
             padding: 20px; 
             border-radius: 8px; 
             flex: 1; 
             min-width: 250px;
-            border-left: 5px solid #1dcdc3;
+            border: 1px solid #b3b3b3;
         }
+
         .rol-card h3 {
-            color: #0c2e3a;
+            color: #000000;
             margin-top: 0;
-        }
-        .highlight {
-            font-weight: bold;
-            color: #018790;
         }
     </style>
 </head>
 <body>
+
+    <?php include_once 'header_view.php'; ?>
+
     <div class="container">
         <h1>Sobre Nosotros</h1>
         
