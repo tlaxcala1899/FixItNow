@@ -55,20 +55,22 @@ class Usuario {
         return $stmt->execute();
     }
     public function crearUsuario($nombre, $apellido_paterno, $apellido_materno, $correo, $contrasenaEncriptada) {
-        
-        
-        $query = "INSERT INTO usuario (nombre, apellido_paterno, apellido_materno, correo, contrasena,rol) 
-                  VALUES (:nombre, :apellido_paterno, :apellido_materno, :correo, :contrasena, 'cliente')";
-        
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':apellido_paterno', $apellido_paterno);
-        $stmt->bindParam(':apellido_materno', $apellido_materno);
-        $stmt->bindParam(':correo', $correo);
-        $stmt->bindParam(':contrasena', $contrasenaEncriptada);
-
-        return $stmt->execute();
-    }
+    $foto_defecto = "fotos_perfil/-1.png";
+    
+    $query = "INSERT INTO usuario (nombre, apellido_paterno, apellido_materno, correo, contrasena, rol, url_foto_perfil) 
+              VALUES (:nombre, :apellido_paterno, :apellido_materno, :correo, :contrasena, 'cliente', :foto)";
+    
+    $stmt = $this->db->prepare($query);
+    
+    $stmt->bindParam(':nombre', $nombre);
+    $stmt->bindParam(':apellido_paterno', $apellido_paterno);
+    $stmt->bindParam(':apellido_materno', $apellido_materno);
+    $stmt->bindParam(':correo', $correo);
+    $stmt->bindParam(':contrasena', $contrasenaEncriptada);
+    $stmt->bindParam(':foto', $foto_defecto); 
+    
+    return $stmt->execute();
+}
     public function actualizarUsuario($id, $nombre, $apellido_paterno, $apellido_materno, $correo, $cedula) {
         $query = "UPDATE Usuario SET 
                     nombre = :nombre, 

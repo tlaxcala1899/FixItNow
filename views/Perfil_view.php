@@ -23,7 +23,7 @@ $apellido_paterno = $_SESSION['usuario_apellido_paterno'] ?? '';
 $apellido_materno = $_SESSION['usuario_apellido_materno'] ?? '';
 $correo = $_SESSION['usuario_correo'] ?? '';
 $rol = $_SESSION['usuario_rol'] ?? '';
-$foto = !empty($_SESSION['usuario_foto_perfil']) ? $_SESSION['usuario_foto_perfil'] : 'img/default-avatar.png';
+$foto = !empty($_SESSION['usuario_foto_perfil']) ? $_SESSION['usuario_foto_perfil'] : 'fotos_perfil/-1.png';
 $cedula = $_SESSION['usuario_cedula'] ?? '';
 
 $rolMinuscula = strtolower($rol);
