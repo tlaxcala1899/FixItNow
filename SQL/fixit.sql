@@ -123,7 +123,7 @@ GRANT SELECT ON fixitnowdb.articulo TO 'inspector'@'localhost';
 GRANT SELECT ON fixitnowdb.pregunta TO 'inspector'@'localhost';
 GRANT SELECT ON fixitnowdb.respuesta TO 'inspector'@'localhost';
 GRANT SELECT ON fixitnowdb.version_1 TO 'inspector'@'localhost';
-
+GRANT SELECT, INSERT ON fixitnowdb.ingresos_plataforma TO 'inspector'@'localhost';
 
 
 CREATE TABLE Usuario(
@@ -206,6 +206,7 @@ CREATE TABLE reporte_respuesta(
 	FOREIGN KEY (inspector) REFERENCES usuario(ID_usuario),
 	FOREIGN KEY (respuesta) REFERENCES respuesta(ID_respuesta)
 );
+
 
 CREATE TABLE metodo_pago(
 	ID INT AUTO_INCREMENT PRIMARY KEY, 
