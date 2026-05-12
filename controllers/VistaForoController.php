@@ -9,7 +9,28 @@ class VistaForoController {
     }
 
     public function mostrar() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion']) && $_POST['accion'] === 'reportar_respuesta') {
+            
+            $rolUsuario = strtolower($_SESSION['usuario_rol'] ?? '');
+            
+            if ($rolUsuario === 'colaborador') {
+                require_once("models/Reporte.php");
+                $modeloReporte = new Reporte();
 
+                $colaborador_id = $_SESSION['usuario_id'];
+                $respuesta_id = (int)$_POST['respuesta_id'];
+                $pregunta_id = (int)$_POST['pregunta_id']; // Para saber a dónde redirigir
+                $titulo = trim($_POST['titulo_reporte']);
+                $descripcion = trim($_POST['descripcion_reporte']);
+
+                if (!empty($titulo) && !empty($descripcion)) {
+                    $modeloReporte->crearReporteRespuesta($colaborador_id, $respuesta_id, $titulo, $descripcion);
+                    
+                    header("Location: ForoVista.php?id=" . $pregunta_id . "&msg=reporte_exito");
+                    exit();
+                }
+            }
+        }
         if (!isset($_GET['id'])) {
             header('Location: ListadoForos.php');
             exit;

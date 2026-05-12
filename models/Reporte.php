@@ -20,6 +20,18 @@ class Reporte {
         
         return $stmt->execute();
     }
+    public function crearReporteRespuesta($colaborador_id, $respuesta_id, $titulo, $descripcion) {
+        $sql = "INSERT INTO reporte_respuesta (colaborador, respuesta, titulo, descripcion, atendido) 
+                VALUES (:colaborador, :respuesta, :titulo, :descripcion, FALSE)";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':colaborador', $colaborador_id, PDO::PARAM_INT);
+        $stmt->bindParam(':respuesta', $respuesta_id, PDO::PARAM_INT);
+        $stmt->bindParam(':titulo', $titulo, PDO::PARAM_STR);
+        $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
+        
+        return $stmt->execute();
+    }
 
 }
 ?>

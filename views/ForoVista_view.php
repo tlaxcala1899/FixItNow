@@ -1,3 +1,7 @@
+<?php 
+$esColaborador = (isset($_SESSION['usuario_rol']) && strtolower($_SESSION['usuario_rol']) === 'colaborador');
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -153,6 +157,58 @@
             font-weight: normal;
         }
 
+        .btn-report-reply {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.2s;
+        }
+
+        .btn-report-reply:hover {
+            background-color: #fff;
+            color: #8c8c8c;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background-color: #cecece;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        
+        .modal-input {
+            width: 100%; padding: 10px; border: none;
+            border-bottom: 2px solid #222; background-color: #fff;
+            box-sizing: border-box; font-family: Arial, sans-serif; resize: vertical;
+        }
+
+        .modal-actions { text-align: right; margin-top: 20px; }
+        
+        .btn-modal {
+            background-color: #222; color: white; border: none;
+            padding: 8px 20px; border-radius: 50px; font-weight: bold; cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -213,12 +269,69 @@
                         </div>
                         <div class="answer-footer">
                             <span class="answer-author-name">Nombre: <?php echo htmlspecialchars($answer['autor_nombre']); ?></span>
-                            <span class="answer-timestamp"><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($answer['fecha_publicacion']))); ?></span>
+                            
+                            <div style="display: flex; align-items: center;">
+                                <span class="answer-timestamp"><?php echo htmlspecialchars(date('d/m/Y H:i', strtotime($answer['fecha_publicacion']))); ?></span>
+                                
+                                <?php if ($esColaborador): ?>
+                                    <button type="button" class="btn-report-reply" data-id="<?php echo $answer['ID_respuesta']; ?>" onclick="abrirModalReporte(this)">Reportar</button>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
+
+        <?php if ($esColaborador): ?>
+            <div class="modal-overlay" id="modal-reporte">
+                <div class="modal-box">
+                    <h2 style="margin-top:0; color:#111;">Reportar Respuesta</h2>
+                    <form action="ForoVista.php?id=<?php echo htmlspecialchars($question['ID_pregunta']); ?>" method="POST">
+                        <input type="hidden" name="accion" value="reportar_respuesta">
+                        
+                        <input type="hidden" name="respuesta_id" id="input-respuesta-id" value="">
+                        <input type="hidden" name="pregunta_id" value="<?php echo htmlspecialchars($question['ID_pregunta']); ?>">
+                        
+                        <div class="form-group">
+                            <label>Título del reporte</label>
+                            <input type="text" name="titulo_reporte" class="modal-input" maxlength="100" required placeholder="Motivo principal...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Descripción detallada</label>
+                            <textarea name="descripcion_reporte" class="modal-input" rows="4" maxlength="1000" required placeholder="Explica el problema con esta respuesta..."></textarea>
+                        </div>
+                        
+                        <div class="modal-actions">
+                            <button type="button" class="btn-modal" style="background-color: transparent; color: #222; border: 2px solid #222; margin-right: 10px;" onclick="cerrarModalReporte()">Cancelar</button>
+                            <button type="submit" class="btn-modal">Enviar Reporte</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                const modalReporte = document.getElementById('modal-reporte');
+                const inputRespuestaId = document.getElementById('input-respuesta-id');
+
+                function abrirModalReporte(btn) {
+                    inputRespuestaId.value = btn.getAttribute('data-id');
+                    modalReporte.style.display = 'flex';
+                }
+
+                function cerrarModalReporte() {
+                    modalReporte.style.display = 'none';
+                }
+            </script>
+        <?php endif; ?>
+        
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('msg') === 'reporte_exito') {
+                alert('El reporte de la respuesta ha sido enviado al equipo de inspectores con éxito.');
+            }
+        </script>
 
     </main>
 </body>
