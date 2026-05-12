@@ -1,0 +1,6 @@
+
+fotos_perfil/*
+img_articulos/*
+
+!fotos_perfil/-1.png
+!img_articulos/-1.png
