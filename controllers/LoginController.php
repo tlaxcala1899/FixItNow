@@ -11,7 +11,6 @@ class LoginController {
         if ($usuario) {
             $_SESSION['usuario_id'] = $usuario['ID_usuario'];
             $_SESSION['usuario_correo'] = $usuario['correo'];
-            $_SESSION['usuario_nombreCompleto'] = $usuario['nombreCompleto'];
             $_SESSION['usuario_nombre']= $usuario['nombre'];
             $_SESSION['usuario_apellido_paterno']= $usuario['apellido_paterno'];
             $_SESSION['usuario_apellido_materno']= $usuario['apellido_materno'];

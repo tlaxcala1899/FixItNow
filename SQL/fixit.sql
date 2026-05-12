@@ -102,11 +102,24 @@ GRANT SELECT,INSERT  ON fixitnowdb.respuesta TO 'profesional'@'localhost';
 GRANT SELECT, INSERT, DELETE,UPDATE ON fixitnowdb.servicios TO 'profesional'@'localhost';
 GRANT SELECT ON fixitnowdb.ingresos_cliente TO 'profesional'@'localhost';
 GRANT SELECT, INSERT ON fixitnowdb.ingresos_plataforma TO 'profesional'@'localhost';
+
+
 CREATE USER 'colaborador'@'localhost' IDENTIFIED BY '12345678';
 REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'colaborador'@'localhost';
+GRANT SELECT ON fixitnowdb.usuario TO 'colaborador'@'localhost';
+GRANT SELECT ON fixitnowdb.articulo TO 'colaborador'@'localhost';
+GRANT SELECT ON fixitnowdb.pregunta TO 'colaborador'@'localhost';
+GRANT SELECT ON fixitnowdb.respuesta TO 'colaborador'@'localhost';
+GRANT SELECT ON fixitnowdb.version_1 TO 'colaborador'@'localhost';
 
 CREATE USER 'inspector'@'localhost' IDENTIFIED BY '12345678';
 REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'inspector'@'localhost';
+GRANT SELECT ON fixitnowdb.usuario TO 'inspector'@'localhost';
+GRANT SELECT ON fixitnowdb.articulo TO 'inspector'@'localhost';
+GRANT SELECT ON fixitnowdb.pregunta TO 'inspector'@'localhost';
+GRANT SELECT ON fixitnowdb.respuesta TO 'inspector'@'localhost';
+GRANT SELECT ON fixitnowdb.version_1 TO 'inspector'@'localhost';
+
 
 
 CREATE TABLE Usuario(
@@ -228,3 +241,10 @@ CREATE TABLE ingresos_plataforma(
 	FOREIGN KEY (usuario) REFERENCES usuario(ID_usuario)
 	
 );
+SELECT * FROM usuario;
+UPDATE usuario SET rol ='inspector' WHERE id_usuario=7;
+/*
+--
+Usar PASSWORD() para hashear contraseña
+--
+-------------------------------------------------------------------------------------------*/
