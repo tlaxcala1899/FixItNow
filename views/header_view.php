@@ -37,7 +37,7 @@
             <?php elseif ($rolHeader === 'inspector'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
                 <a href="ReporteArticulos.php" class="nav-link">Reporte artículos</a>
-                <a href="#" class="nav-link">Reporte respuestas</a>
+                <a href="ReporteRespuestas.php" class="nav-link">Reporte respuestas</a>
                 <a href="IngresosPlataforma.php" class="nav-link">Pago plataforma</a>
             <?php else: // sinsesion ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
