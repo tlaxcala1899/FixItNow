@@ -1,5 +1,7 @@
 <?php
+require_once("models/Reporte.php");
 class ReporteArticuloController {
+    
     public function mostrar() {
         if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_rol'] != 'inspector') {
             header('Location: login.php');
@@ -10,7 +12,7 @@ class ReporteArticuloController {
             die("ID de reporte no especificado.");
         }
 
-        require_once("models/Reporte.php");
+        
         $reporteModel = new Reporte();
         $reporte = $reporteModel->getReportePorId((int)$_GET['id']);
 

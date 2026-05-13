@@ -18,16 +18,14 @@ class Articulo {
                 INNER JOIN Usuario AS U ON V.editor = U.ID_usuario 
                 WHERE 1=1 "; 
         
-        // Si hay búsqueda por texto
         if (!empty($busqueda)) {
             $sql .= "AND A.titulo LIKE :busqueda ";
         }
         
-        // Si hay categorías seleccionadas (usamos IN)
         if (!empty($categorias) && is_array($categorias)) {
             $catParams = [];
             foreach ($categorias as $index => $cat) {
-                $catParams[] = ':cat' . $index; // Genera :cat0, :cat1, etc.
+                $catParams[] = ':cat' . $index;
             }
             $sql .= "AND A.categoria IN (" . implode(',', $catParams) . ") ";
         }

@@ -24,17 +24,31 @@ class Reporte {
     }
 
     public function getReportePorId($id) {
-        $sql = "SELECT r.*, a.ID AS articulo_id, v.ID AS version_id, v.titulo AS titulo_articulo
+        $sql = "SELECT r.*, a.ID AS articulo_id, v.ID AS version_id, a.titulo AS titulo_articulo
                 FROM reporte_articulo AS r
                 JOIN articulo AS a ON r.articulo = a.ID
                 LEFT JOIN version_1 AS v ON a.ID = v.articulo
                 WHERE r.ID = :id
                 ORDER BY v.fecha_creacion DESC
-                LIMIT 1"; // Tomamos la última versión para el enlace
+                LIMIT 1"; 
+                
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function crearReporteArticulo($colaborador_id, $articulo_id, $titulo, $descripcion) {
+        $sql = "INSERT INTO reporte_articulo (colaborador, articulo, titulo, descripcion, atendido) 
+                VALUES (:colaborador, :articulo, :titulo, :descripcion, FALSE)";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':colaborador', $colaborador_id, PDO::PARAM_INT);
+        $stmt->bindParam(':articulo', $articulo_id, PDO::PARAM_INT);
+        $stmt->bindParam(':titulo', $titulo, PDO::PARAM_STR);
+        $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
+        
+        return $stmt->execute();
     }
 }
 ?>

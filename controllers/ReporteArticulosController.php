@@ -8,7 +8,7 @@ class ReporteArticulosController {
 
         require_once("models/Reporte.php");
         $reporteModel = new Reporte();
-        $reportes = $reporteModel->getReportes($_SESSION['usuario_id']);
+        $reportes = $reporteModel->getReportes();
 
         require_once("views/ReporteArticulos_view.php");
     }

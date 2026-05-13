@@ -57,9 +57,7 @@
 </head>
 <body>
 
-    <header>
-        <?php include 'header_view.php'; ?>
-    </header>
+
 
     <main class="main-container">
         <h1 class="page-title">Reporte #<?php echo $reporte['ID']; ?></h1>
