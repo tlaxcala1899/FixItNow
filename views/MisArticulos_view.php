@@ -98,7 +98,7 @@
                 <?php foreach ($misArticulos as $articulo): ?>
                     <a href="ArticuloCliente.php?id=<?php echo $articulo['version_id']; ?>" class="articulo-btn">
                         <div class="art-img-box">
-                            <img src="img_articulos/-1.png" alt="Imagen artículo">
+                            <img src="<?php echo htmlspecialchars($articulo['url_img_articulo']); ?>" alt="Imagen artículo">
                         </div>
                         <div class="art-info-box">
                             <h3 class="art-titulo"><?php echo htmlspecialchars($articulo['titulo']); ?></h3>

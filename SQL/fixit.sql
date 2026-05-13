@@ -124,6 +124,9 @@ GRANT SELECT ON fixitnowdb.pregunta TO 'inspector'@'localhost';
 GRANT SELECT ON fixitnowdb.respuesta TO 'inspector'@'localhost';
 GRANT SELECT ON fixitnowdb.version_1 TO 'inspector'@'localhost';
 GRANT SELECT, INSERT ON fixitnowdb.ingresos_plataforma TO 'inspector'@'localhost';
+GRANT SELECT,update ON fixitnowdb.reporte_articulo TO 'inspector'@'localhost';
+GRANT SELECT,UPDATE  ON fixitnowdb.reporte_respuesta TO 'inspector'@'localhost';
+
 
 
 CREATE TABLE Usuario(
