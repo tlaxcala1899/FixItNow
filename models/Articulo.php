@@ -113,5 +113,18 @@ class Articulo {
         return false;
     }
 
+    public function getArticulosDelRedactor($id_redactor) {
+        $sql = "SELECT A.ID AS articulo_id, V.ID AS version_id, A.titulo, A.categoria,
+                LEFT(V.contenido, 100) AS extracto, V.url_img_articulo
+                FROM Articulo AS A
+                INNER JOIN Version_1 AS V ON A.ID = V.articulo
+                WHERE A.redactor = :redactor
+                ORDER BY V.fecha_creacion DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':redactor', $id_redactor, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
 ?>

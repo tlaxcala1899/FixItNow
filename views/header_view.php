@@ -22,11 +22,11 @@
                 <a href="ListadoServicios.php" class="nav-link">Servicios</a>
                 <a href="SobreNosotros.php" class="nav-link">Sobre nosotros</a>
             <?php elseif ($rolHeader === 'profesional'): ?>
+                <a href="MisArticulos.php" class="nav-link">Mis artículos</a>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
                 <a href="RedactarArticulo.php" class="nav-link">Redactar</a>
                 <a href="ListadoForos.php" class="nav-link">Foros</a>
                 <a href="MisServicios.php" class="nav-link">Mis servicios</a>
-                <a href="ListadoServicios.php" class="nav-link">Servicios</a>
                 <a href="IngresosCliente.php" class="nav-link">Ingresos cliente</a>
                 <a href="IngresosPlataforma.php" class="nav-link">Pago plataforma</a>
             <?php elseif ($rolHeader === 'colaborador'): ?>
@@ -36,7 +36,7 @@
                 <a href="SobreNosotros.php" class="nav-link">Sobre nosotros</a>
             <?php elseif ($rolHeader === 'inspector'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
-                <a href="#" class="nav-link">Reporte artículos</a>
+                <a href="ReporteArticulos.php" class="nav-link">Reporte artículos</a>
                 <a href="#" class="nav-link">Reporte respuestas</a>
                 <a href="IngresosPlataforma.php" class="nav-link">Pago plataforma</a>
             <?php else: // sinsesion ?>
