@@ -1,9 +1,16 @@
 <?php
 session_start();
+
 require_once("controllers/ReporteArticuloController.php");
+$controller = new ReporteArticuloController();
 
-include 'views/header_view.php';
-
-$controlador = new ReporteArticuloController();
-$controlador->mostrar();
+if (isset($_POST["eliminar_version"])) {
+    $controller->eliminar();
+} 
+elseif (isset($_POST["descartar_reporte"])) {
+    $controller->descartar();
+} 
+else {
+    $controller->mostrar();
+}
 ?>

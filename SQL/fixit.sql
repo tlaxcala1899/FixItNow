@@ -129,7 +129,6 @@ GRANT SELECT,UPDATE  ON fixitnowdb.reporte_respuesta TO 'inspector'@'localhost';
 
 
 DELIMITER //
-
 CREATE TRIGGER trg_respuestas_eliminadas
 AFTER DELETE ON respuesta
 FOR EACH ROW
@@ -148,9 +147,47 @@ BEGIN
         @inspector_actual -- Esta variable se la enviaremos desde PHP
     );
 END //
-
 DELIMITER ;
 
+CREATE TABLE log_versiones_eliminadas (
+    ID_log INT AUTO_INCREMENT PRIMARY KEY,
+    id_version_original INT,
+    editor_original INT,
+    id_articulo INT,
+    url_img_articulo VARCHAR(255),
+    contenido VARCHAR(4000),
+    fecha_creacion_original TIMESTAMP,
+    fecha_eliminacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    inspector_id INT,
+    FOREIGN KEY (inspector_id) REFERENCES usuario(ID_usuario)
+) AUTO_INCREMENT = 26;
+
+
+DELIMITER //
+CREATE TRIGGER trg_versiones_eliminadas
+AFTER DELETE ON version_1
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_versiones_eliminadas (
+        id_version_original,
+        editor_original,
+        id_articulo,
+        url_img_articulo,
+        contenido,
+        fecha_creacion_original,
+        inspector_id
+    ) VALUES (
+        OLD.ID,
+        OLD.editor,
+        OLD.articulo,
+        OLD.url_img_articulo,
+        OLD.contenido,
+        OLD.fecha_creacion,
+        @inspector_actual -- Variable que enviaremos desde PHP
+    );
+END //
+
+DELIMITER ;
 
 CREATE TABLE log_respuestas_eliminadas (
     ID_log INT AUTO_INCREMENT PRIMARY KEY,
@@ -199,19 +236,21 @@ CREATE TABLE Version_1(
 	FOREIGN KEY (editor) REFERENCES usuario(ID_usuario),
 	FOREIGN KEY (articulo) REFERENCES articulo(ID)
 );
+
+
 /*
 --colaborador crea e inspector recibe*/
  CREATE TABLE reporte_articulo (
  	ID INT AUTO_INCREMENT PRIMARY KEY,
  	colaborador INT,
  	inspector INT,
-	articulo INT,
+	version_1 INT,
 	fecha_creacion TIMESTAMP DEFAULT current_timestamp,
 	titulo VARCHAR(100),
 	descripcion VARCHAR(1000),
 	atendido BOOLEAN,
  	FOREIGN KEY (colaborador) REFERENCES usuario(ID_usuario),
- 	FOREIGN KEY (articulo) REFERENCES articulo(id)
+ 	FOREIGN KEY (version_1) REFERENCES version_1(ID)
  );
 
 CREATE TABLE pregunta(
