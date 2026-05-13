@@ -1,11 +1,12 @@
 <?php
 require_once 'models/Foro.php';
-
+require_once 'models/ReporteRespuestasM.php';
 class VistaForoController {
     private $foroModel;
-
+    private $reporteModel;
     public function __construct() {
         $this->foroModel = new Foro();
+        $this->reporteModel = new ReporteRespuestasM();
     }
 
     public function mostrar() {
@@ -24,7 +25,7 @@ class VistaForoController {
                 $descripcion = trim($_POST['descripcion_reporte']);
 
                 if (!empty($titulo) && !empty($descripcion)) {
-                    $modeloReporte->crearReporteRespuesta($colaborador_id, $respuesta_id, $titulo, $descripcion);
+                    $this->reporteModel->crearReporteRespuesta($colaborador_id, $respuesta_id, $titulo, $descripcion);
                     
                     header("Location: ForoVista.php?id=" . $pregunta_id . "&msg=reporte_exito");
                     exit();
@@ -55,7 +56,7 @@ class VistaForoController {
 
         include 'views/ForoVista_view.php';
     }
-
+    
     public function addAnswer() {
         
         if (!isset($_SESSION['usuario_id'])) {

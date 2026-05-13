@@ -9,26 +9,31 @@ class ReporteRespuestasM {
         $this->db = Conectar::conexion();
     }
 
-    public function getReportes($inspectorId = null) {
+    public function descartarReporte($idReporte, $idInspector) {
+        $sql = "UPDATE reporte_respuesta SET atendido = TRUE, inspector = :inspector WHERE ID = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':inspector', $idInspector, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $idReporte, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function getReportes() {
         $sql = "SELECT 
                     r.ID,
                     r.titulo,
                     LEFT(r.descripcion, 100) AS extracto,
                     r.respuesta,
-                    r.fecha_creacion
-                FROM reporte_respuesta AS r";
-        if ($inspectorId != null) {
-            $sql .= " WHERE r.inspector = :inspector";
-        }
-        $sql .= " ORDER BY r.fecha_creacion DESC";
+                    r.fecha_creacion,
+                    re.id_pregunta 
+                FROM reporte_respuesta AS r
+                INNER JOIN respuesta AS re ON r.respuesta = re.ID_respuesta
+                WHERE r.atendido = FALSE 
+                ORDER BY r.fecha_creacion DESC";
+                
         $stmt = $this->db->prepare($sql);
-        if ($inspectorId != null) {
-            $stmt->bindParam(':inspector', $inspectorId, PDO::PARAM_INT);
-        }
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
     public function getReportePorId($id) {
         $sql = "SELECT 
                     r.*,
@@ -50,9 +55,26 @@ class ReporteRespuestasM {
     }
 
     public function eliminarRespuesta($idRespuesta) {
-        $sql = "DELETE FROM respuesta WHERE ID_respuesta = :id";
+        $sqlUpdate = "UPDATE reporte_respuesta SET respuesta = NULL WHERE respuesta = :id";
+        $stmtUpdate = $this->db->prepare($sqlUpdate);
+        $stmtUpdate->bindParam(':id', $idRespuesta, PDO::PARAM_INT);
+        $stmtUpdate->execute();
+
+        $sqlDelete = "DELETE FROM respuesta WHERE ID_respuesta = :id";
+        $stmtDelete = $this->db->prepare($sqlDelete);
+        $stmtDelete->bindParam(':id', $idRespuesta, PDO::PARAM_INT);
+        return $stmtDelete->execute();
+    }
+    public function crearReporteRespuesta($colaborador_id, $respuesta_id, $titulo, $descripcion) {
+        $sql = "INSERT INTO reporte_respuesta (colaborador, respuesta, titulo, descripcion, atendido) 
+                VALUES (:colaborador, :respuesta, :titulo, :descripcion, FALSE)";
+        
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $idRespuesta, PDO::PARAM_INT);
+        $stmt->bindParam(':colaborador', $colaborador_id, PDO::PARAM_INT);
+        $stmt->bindParam(':respuesta', $respuesta_id, PDO::PARAM_INT);
+        $stmt->bindParam(':titulo', $titulo, PDO::PARAM_STR);
+        $stmt->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
+        
         return $stmt->execute();
     }
 }

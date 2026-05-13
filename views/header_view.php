@@ -32,7 +32,6 @@
             <?php elseif ($rolHeader === 'colaborador'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
                 <a href="ListadoForos.php" class="nav-link">Foros</a>
-                <a href="#" class="nav-link">Mis respuestas</a>
                 <a href="SobreNosotros.php" class="nav-link">Sobre nosotros</a>
             <?php elseif ($rolHeader === 'inspector'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>

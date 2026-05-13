@@ -12,23 +12,43 @@ class ReporteRespuestaController {
     }
 
     public function mostrar() {
+        $data["titulo"] = "Bandeja de Reportes";
+        $data["reportes"] = $this->model->getReportes(); 
+        require_once("views/ReporteRespuestas_view.php");
+    }
 
-        $id = $_GET["id"];
+    public function descartar() {
+        if (session_status() === PHP_SESSION_NONE) { session_start(); }
+        
+        $id_reporte = (int)$_POST['id_reporte'];
+        $inspectorId = $_SESSION["usuario_id"] ?? null; 
 
-        $data["titulo"] = "Reporte respuesta";
-        $data["reporte"] = $this->model->getReportePorId($id);
-
-        require_once("views/ReporteRespuesta_view.php");
+        if ($id_reporte > 0 && $inspectorId) {
+            $this->model->descartarReporte($id_reporte, $inspectorId);
+        }
+        
+        header("Location: ReporteRespuestas.php");
+        exit();
     }
 
     public function eliminar() {
+        if (session_status() === PHP_SESSION_NONE) { session_start(); }
+        
+        $id_respuesta = (int)$_POST['id_respuesta'];
+        $id_reporte = (int)$_POST['id_reporte'];
+        $inspectorId = $_SESSION["usuario_id"] ?? null;
 
-        $idRespuesta = $_POST["id_respuesta"];
-
-        $this->model->eliminarRespuesta($idRespuesta);
-
+        if ($id_respuesta > 0 && $inspectorId) {
+            // Elimina la respuesta del foro
+            $this->model->eliminarRespuesta($id_respuesta);
+            $this->model->descartarReporte($id_reporte, $inspectorId);
+        }
+        
         header("Location: ReporteRespuestas.php");
+        exit();
     }
+    
+
 }
 
 ?>
