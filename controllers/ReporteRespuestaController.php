@@ -39,8 +39,7 @@ class ReporteRespuestaController {
         $inspectorId = $_SESSION["usuario_id"] ?? null;
 
         if ($id_respuesta > 0 && $inspectorId) {
-            // Elimina la respuesta del foro
-            $this->model->eliminarRespuesta($id_respuesta);
+            $this->model->eliminarRespuesta($id_respuesta, $inspectorId);
             $this->model->descartarReporte($id_reporte, $inspectorId);
         }
         

@@ -33,7 +33,7 @@ class ReporteRespuestasController {
             $inspectorId = $_SESSION["ID"] ?? null;
 
             if ($id_respuesta > 0 && $inspectorId) {
-                $this->model->eliminarRespuesta($id_respuesta);
+                $this->model->eliminarRespuesta($id_respuesta, $inspectorId);
                 $this->model->descartarReporte($id_reporte, $inspectorId);
                 
                 header("Location: ReporteRespuesta.php");

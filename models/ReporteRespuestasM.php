@@ -54,11 +54,17 @@ class ReporteRespuestasM {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function eliminarRespuesta($idRespuesta) {
+    public function eliminarRespuesta($idRespuesta,$idInspector) {
+        
         $sqlUpdate = "UPDATE reporte_respuesta SET respuesta = NULL WHERE respuesta = :id";
         $stmtUpdate = $this->db->prepare($sqlUpdate);
         $stmtUpdate->bindParam(':id', $idRespuesta, PDO::PARAM_INT);
         $stmtUpdate->execute();
+
+        $sqlInspector = "SET @inspector_actual = :inspector";
+        $stmtInspector = $this->db->prepare($sqlInspector);
+        $stmtInspector->bindParam(':inspector', $idInspector, PDO::PARAM_INT);
+        $stmtInspector->execute();
 
         $sqlDelete = "DELETE FROM respuesta WHERE ID_respuesta = :id";
         $stmtDelete = $this->db->prepare($sqlDelete);

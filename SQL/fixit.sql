@@ -128,6 +128,43 @@ GRANT SELECT,update ON fixitnowdb.reporte_articulo TO 'inspector'@'localhost';
 GRANT SELECT,UPDATE  ON fixitnowdb.reporte_respuesta TO 'inspector'@'localhost';
 
 
+DELIMITER //
+
+CREATE TRIGGER trg_respuestas_eliminadas
+AFTER DELETE ON respuesta
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_respuestas_eliminadas (
+        id_respuesta_original,
+        id_pregunta,
+        contenido,
+        fecha_publicacion_original,
+        inspector_id
+    ) VALUES (
+        OLD.ID_respuesta,
+        OLD.id_pregunta,
+        OLD.contenido,
+        OLD.fecha_publicacion,
+        @inspector_actual -- Esta variable se la enviaremos desde PHP
+    );
+END //
+
+DELIMITER ;
+
+
+CREATE TABLE log_respuestas_eliminadas (
+    ID_log INT AUTO_INCREMENT PRIMARY KEY,
+    id_respuesta_original INT,
+    id_pregunta INT,
+    contenido VARCHAR(4000),
+    fecha_publicacion_original TIMESTAMP,
+    fecha_eliminacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    inspector_id INT,
+    FOREIGN KEY (inspector_id) REFERENCES usuario(ID_usuario)
+) AUTO_INCREMENT = 26;
+
+
+
 
 CREATE TABLE Usuario(
 	ID_usuario INT AUTO_INCREMENT PRIMARY KEY,
