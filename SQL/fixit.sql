@@ -106,7 +106,7 @@ GRANT SELECT, INSERT ON fixitnowdb.ingresos_plataforma TO 'profesional'@'localho
 
 CREATE USER 'colaborador'@'localhost' IDENTIFIED BY '12345678';
 REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'colaborador'@'localhost';
-GRANT SELECT ON fixitnowdb.usuario TO 'colaborador'@'localhost';
+GRANT SELECT,update ON fixitnowdb.usuario TO 'colaborador'@'localhost';
 GRANT SELECT ON fixitnowdb.articulo TO 'colaborador'@'localhost';
 GRANT SELECT ON fixitnowdb.pregunta TO 'colaborador'@'localhost';
 GRANT SELECT ON fixitnowdb.respuesta TO 'colaborador'@'localhost';
@@ -118,7 +118,7 @@ GRANT INSERT ON fixitnowdb.reporte_respuesta TO 'colaborador'@'localhost';
 
 CREATE USER 'inspector'@'localhost' IDENTIFIED BY '12345678';
 REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'inspector'@'localhost';
-GRANT SELECT ON fixitnowdb.usuario TO 'inspector'@'localhost';
+GRANT SELECT,update ON fixitnowdb.usuario TO 'inspector'@'localhost';
 GRANT SELECT ON fixitnowdb.articulo TO 'inspector'@'localhost';
 GRANT SELECT ON fixitnowdb.pregunta TO 'inspector'@'localhost';
 GRANT SELECT,DELETE  ON fixitnowdb.respuesta TO 'inspector'@'localhost';

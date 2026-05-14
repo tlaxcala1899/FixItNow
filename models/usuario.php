@@ -18,10 +18,11 @@ class Usuario {
     }
     public function getUsuario($id){
         $consulta = $this->db->query("SELECT * FROM usuario where ID_usuario =".$id);
+        
         while ($filas = $consulta->fetch(PDO::FETCH_ASSOC)) {
-            $this->usuario[] = $filas;
+            $usuario[] = $filas;
         }
-        return $this->usuario;
+        return $usuario;
     }
     public function verificarCredenciales($correo,$contrasena_ingresada){
         $query = "SELECT * FROM usuario WHERE correo = :correo LIMIT 1";
