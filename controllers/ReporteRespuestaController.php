@@ -7,7 +7,6 @@ class ReporteRespuestaController {
     private $model;
 
     public function __construct() {
-
         $this->model = new ReporteRespuestasM();
     }
 
@@ -32,6 +31,12 @@ class ReporteRespuestaController {
     }
 
     public function eliminar() {
+<<<<<<< HEAD
+        $idRespuesta = $_POST["id_respuesta"];
+
+        $this->model->eliminarRespuesta($idRespuesta);
+
+=======
         if (session_status() === PHP_SESSION_NONE) { session_start(); }
         
         $id_respuesta = (int)$_POST['id_respuesta'];
@@ -43,6 +48,7 @@ class ReporteRespuestaController {
             $this->model->descartarReporte($id_reporte, $inspectorId);
         }
         
+>>>>>>> 6bdc0e6ec5ee99c91ed4bd23441ca956d4a90bbd
         header("Location: ReporteRespuestas.php");
         exit();
     }

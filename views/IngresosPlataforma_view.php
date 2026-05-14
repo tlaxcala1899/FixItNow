@@ -80,7 +80,7 @@
     </header>
 
     <main class="main-container">
-        <h1 class="page-title">Pagos por Uso de Plataforma</h1>
+        <h1 class="page-title">Pagos de la plataforma</h1>
 
         <div class="pagos-lista">
             <?php if (empty($pagos)): ?>
