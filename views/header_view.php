@@ -19,6 +19,7 @@
             if ($rolHeader === 'cliente'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
                 <a href="ListadoForos.php" class="nav-link">Foros</a>
+                <a href="ForoVista.php" class="nav-link">Preguntar</a>
                 <a href="ListadoServicios.php" class="nav-link">Servicios</a>
                 <a href="SobreNosotros.php" class="nav-link">Sobre nosotros</a>
             <?php elseif ($rolHeader === 'profesional'): ?>
@@ -32,11 +33,12 @@
             <?php elseif ($rolHeader === 'colaborador'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
                 <a href="ListadoForos.php" class="nav-link">Foros</a>
-                <a href="#" class="nav-link">Mis respuestas</a>
+                <a href="MisRespuestas.php" class="nav-link">Mis respuestas</a>
                 <a href="SobreNosotros.php" class="nav-link">Sobre nosotros</a>
             <?php elseif ($rolHeader === 'inspector'): ?>
                 <a href="ListadoArticulos.php" class="nav-link">Artículos</a>
                 <a href="ReporteArticulos.php" class="nav-link">Reporte artículos</a>
+                <a href="ListadoForos.php" class="nav-link">Foros</a>
                 <a href="ReporteRespuestas.php" class="nav-link">Reporte respuestas</a>
                 <a href="IngresosPlataforma.php" class="nav-link">Pago plataforma</a>
             <?php else: // sinsesion ?>

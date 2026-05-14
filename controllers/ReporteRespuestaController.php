@@ -7,12 +7,10 @@ class ReporteRespuestaController {
     private $model;
 
     public function __construct() {
-
         $this->model = new ReporteRespuestasM();
     }
 
     public function mostrar() {
-
         $id = $_GET["id"];
 
         $data["titulo"] = "Reporte respuesta";
@@ -22,7 +20,6 @@ class ReporteRespuestaController {
     }
 
     public function eliminar() {
-
         $idRespuesta = $_POST["id_respuesta"];
 
         $this->model->eliminarRespuesta($idRespuesta);
