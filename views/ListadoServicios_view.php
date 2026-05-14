@@ -150,9 +150,7 @@
         <h1 class="page-title">Servicios</h1>
 
         <div class="search-bar-container">
-            <button class="btn-icon" title="Filtrar">
-                <svg viewBox="0 0 24 24"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
-            </button>
+            
 
             <form method="GET" action="ListadoServicios.php" class="search-form">
                 <input type="text" name="buscar" class="search-input" placeholder="buscar" value="<?php echo htmlspecialchars($busqueda); ?>">
