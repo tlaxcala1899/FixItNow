@@ -163,7 +163,7 @@ $imgUrl = !empty($articulo['url_img_articulo']) ? $articulo['url_img_articulo'] 
                 </div>
 
                 <div class="action-buttons">
-                    <a href="ArticuloCliente.php?id=<?php echo htmlspecialchars($articulo['ID']); ?>" class="btn-cancel">Cancelar</a>
+                    <a href="inicio.php" class="btn-cancel">Cancelar</a>
                     <button type="submit" class="btn-save">Publicar nueva versión</button>
                 </div>
             </form>
