@@ -31,12 +31,6 @@ class ReporteRespuestaController {
     }
 
     public function eliminar() {
-<<<<<<< HEAD
-        $idRespuesta = $_POST["id_respuesta"];
-
-        $this->model->eliminarRespuesta($idRespuesta);
-
-=======
         if (session_status() === PHP_SESSION_NONE) { session_start(); }
         
         $id_respuesta = (int)$_POST['id_respuesta'];
@@ -44,11 +38,13 @@ class ReporteRespuestaController {
         $inspectorId = $_SESSION["usuario_id"] ?? null;
 
         if ($id_respuesta > 0 && $inspectorId) {
-            $this->model->eliminarRespuesta($id_respuesta, $inspectorId);
+            $this->model->eliminarRespuesta($id_respuesta,$inspectorId);
+            
+            // Marca el reporte como atendido para quitarlo de la bandeja
             $this->model->descartarReporte($id_reporte, $inspectorId);
         }
         
->>>>>>> 6bdc0e6ec5ee99c91ed4bd23441ca956d4a90bbd
+        // Redirige a la bandeja general
         header("Location: ReporteRespuestas.php");
         exit();
     }

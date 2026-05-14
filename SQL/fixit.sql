@@ -109,7 +109,7 @@ REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'colaborador'@'localhost';
 GRANT SELECT,update ON fixitnowdb.usuario TO 'colaborador'@'localhost';
 GRANT SELECT ON fixitnowdb.articulo TO 'colaborador'@'localhost';
 GRANT SELECT ON fixitnowdb.pregunta TO 'colaborador'@'localhost';
-GRANT SELECT ON fixitnowdb.respuesta TO 'colaborador'@'localhost';
+GRANT SELECT,INSERT  ON fixitnowdb.respuesta TO 'colaborador'@'localhost';
 GRANT SELECT ON fixitnowdb.version_1 TO 'colaborador'@'localhost';
 GRANT INSERT ON fixitnowdb.reporte_articulo TO 'colaborador'@'localhost';
 GRANT INSERT ON fixitnowdb.reporte_respuesta TO 'colaborador'@'localhost';

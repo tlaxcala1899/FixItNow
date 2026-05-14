@@ -77,9 +77,9 @@ class Reporte {
         $stmtInspector->bindParam(':inspector', $idInspector, PDO::PARAM_INT);
         $stmtInspector->execute();
 
-        $sqlUpdate = "UPDATE reporte_articulo SET version_1 = NULL WHERE ID = :id_reporte";
+        $sqlUpdate = "UPDATE reporte_articulo SET version_1 = NULL WHERE version_1 = :id_version";
         $stmtUpdate = $this->db->prepare($sqlUpdate);
-        $stmtUpdate->bindParam(':id_reporte', $idReporte, PDO::PARAM_INT);
+        $stmtUpdate->bindParam(':id_version', $idVersion, PDO::PARAM_INT); 
         $stmtUpdate->execute();
 
         $sqlDelete = "DELETE FROM version_1 WHERE ID = :id_version";
