@@ -144,7 +144,7 @@ BEGIN
         OLD.id_pregunta,
         OLD.contenido,
         OLD.fecha_publicacion,
-        @inspector_actual -- Esta variable se la enviaremos desde PHP
+        @inspector_actual
     );
 END //
 DELIMITER ;
@@ -183,7 +183,7 @@ BEGIN
         OLD.url_img_articulo,
         OLD.contenido,
         OLD.fecha_creacion,
-        @inspector_actual -- Variable que enviaremos desde PHP
+        @inspector_actual 
     );
 END //
 
