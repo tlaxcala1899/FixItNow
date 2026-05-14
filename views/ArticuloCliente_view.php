@@ -216,8 +216,8 @@ $imgUrl = (!empty($articulo['url_img_articulo'])) ? $articulo['url_img_articulo'
                     <h2 style="margin-top:0; color:#111;">Reportar Artículo</h2>
                     <form action="ArticuloCliente.php?id=<?php echo htmlspecialchars($_GET['id'] ?? ''); ?>" method="POST">
                         <input type="hidden" name="accion" value="reportar_articulo">
-                        <input type="hidden" name="articulo_id" value="<?php echo htmlspecialchars($articulo['ID']); ?>">
-                        
+                        <input type="hidden" name="id_version" value="<?php echo $version['ID']; ?>">
+
                         <div class="form-group">
                             <label>Título del reporte</label>
                             <input type="text" name="titulo_reporte" class="modal-input" maxlength="100" required placeholder="Motivo principal...">

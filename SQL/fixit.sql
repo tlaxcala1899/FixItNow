@@ -121,11 +121,85 @@ REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'inspector'@'localhost';
 GRANT SELECT ON fixitnowdb.usuario TO 'inspector'@'localhost';
 GRANT SELECT ON fixitnowdb.articulo TO 'inspector'@'localhost';
 GRANT SELECT ON fixitnowdb.pregunta TO 'inspector'@'localhost';
-GRANT SELECT ON fixitnowdb.respuesta TO 'inspector'@'localhost';
-GRANT SELECT ON fixitnowdb.version_1 TO 'inspector'@'localhost';
+GRANT SELECT,DELETE  ON fixitnowdb.respuesta TO 'inspector'@'localhost';
+GRANT SELECT, DELETE  ON fixitnowdb.version_1 TO 'inspector'@'localhost';
 GRANT SELECT, INSERT ON fixitnowdb.ingresos_plataforma TO 'inspector'@'localhost';
 GRANT SELECT,update ON fixitnowdb.reporte_articulo TO 'inspector'@'localhost';
 GRANT SELECT,UPDATE  ON fixitnowdb.reporte_respuesta TO 'inspector'@'localhost';
+
+
+DELIMITER //
+CREATE TRIGGER trg_respuestas_eliminadas
+AFTER DELETE ON respuesta
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_respuestas_eliminadas (
+        id_respuesta_original,
+        id_pregunta,
+        contenido,
+        fecha_publicacion_original,
+        inspector_id
+    ) VALUES (
+        OLD.ID_respuesta,
+        OLD.id_pregunta,
+        OLD.contenido,
+        OLD.fecha_publicacion,
+        @inspector_actual
+    );
+END //
+DELIMITER ;
+
+CREATE TABLE log_versiones_eliminadas (
+    ID_log INT AUTO_INCREMENT PRIMARY KEY,
+    id_version_original INT,
+    editor_original INT,
+    id_articulo INT,
+    url_img_articulo VARCHAR(255),
+    contenido VARCHAR(4000),
+    fecha_creacion_original TIMESTAMP,
+    fecha_eliminacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    inspector_id INT,
+    FOREIGN KEY (inspector_id) REFERENCES usuario(ID_usuario)
+) AUTO_INCREMENT = 26;
+
+
+DELIMITER //
+CREATE TRIGGER trg_versiones_eliminadas
+AFTER DELETE ON version_1
+FOR EACH ROW
+BEGIN
+    INSERT INTO log_versiones_eliminadas (
+        id_version_original,
+        editor_original,
+        id_articulo,
+        url_img_articulo,
+        contenido,
+        fecha_creacion_original,
+        inspector_id
+    ) VALUES (
+        OLD.ID,
+        OLD.editor,
+        OLD.articulo,
+        OLD.url_img_articulo,
+        OLD.contenido,
+        OLD.fecha_creacion,
+        @inspector_actual 
+    );
+END //
+
+DELIMITER ;
+
+CREATE TABLE log_respuestas_eliminadas (
+    ID_log INT AUTO_INCREMENT PRIMARY KEY,
+    id_respuesta_original INT,
+    id_pregunta INT,
+    contenido VARCHAR(4000),
+    fecha_publicacion_original TIMESTAMP,
+    fecha_eliminacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    inspector_id INT,
+    FOREIGN KEY (inspector_id) REFERENCES usuario(ID_usuario)
+) AUTO_INCREMENT = 26;
+
 
 
 
@@ -162,19 +236,21 @@ CREATE TABLE Version_1(
 	FOREIGN KEY (editor) REFERENCES usuario(ID_usuario),
 	FOREIGN KEY (articulo) REFERENCES articulo(ID)
 );
+
+
 /*
 --colaborador crea e inspector recibe*/
  CREATE TABLE reporte_articulo (
  	ID INT AUTO_INCREMENT PRIMARY KEY,
  	colaborador INT,
  	inspector INT,
-	articulo INT,
+	version_1 INT,
 	fecha_creacion TIMESTAMP DEFAULT current_timestamp,
 	titulo VARCHAR(100),
 	descripcion VARCHAR(1000),
 	atendido BOOLEAN,
  	FOREIGN KEY (colaborador) REFERENCES usuario(ID_usuario),
- 	FOREIGN KEY (articulo) REFERENCES articulo(id)
+ 	FOREIGN KEY (version_1) REFERENCES version_1(ID)
  );
 
 CREATE TABLE pregunta(

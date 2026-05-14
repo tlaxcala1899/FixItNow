@@ -68,8 +68,7 @@
     </style>
 </head>
 <body>
-
-    <?php include_once 'header_view.php'; ?>
+    <header><?php include 'header_view.php'; ?></header>
 
     <div class="container">
         <h1>Sobre Nosotros</h1>

@@ -3,7 +3,7 @@ require_once("controllers/ListadoArticulosController.php");
 $controlador = new ListadoArticulosController();
 
 $pagina_actual = isset($_GET['pagina']) ? max(1, (int)$_GET['pagina']) : 1;
-$articulos_por_pagina = 10; 
+$articulos_por_pagina = 5; 
 
 $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 $categorias_seleccionadas = isset($_GET['categorias']) && is_array($_GET['categorias']) ? $_GET['categorias'] : [];

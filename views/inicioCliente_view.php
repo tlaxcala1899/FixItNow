@@ -159,21 +159,22 @@
         <h2 class="section-title">Nuestros servicios</h2>
         <section class="content-box services-box">
             
-            <div class="service-card">
+            <a href="ListadoServicios.php?buscar=Software" class="service-card" style="text-decoration: none; color: inherit; display: block;">
                 <div class="service-image">
                     <img src="img/software.png" alt="Software">
                 </div>
                 <div class="service-label">Software</div>
-            </div>
+            </a>
 
-            <div class="service-card">
+            <a href="ListadoServicios.php?buscar=Hardware" class="service-card" style="text-decoration: none; color: inherit; display: block;">
                 <div class="service-image">
                     <img src="img/hardware.png" alt="Hardware">
                 </div>
                 <div class="service-label">Hardware</div>
-            </div>
+            </a>
             
-    <?php endif; ?>
+        </section>
+<?php endif; ?>
     </section>
 </main>
 </body>
